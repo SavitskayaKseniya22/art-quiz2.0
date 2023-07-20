@@ -1,4 +1,4 @@
-## ART-QUIZ:
+## ART-QUIZ: Refactoring in progress
 
 [Task](https://github.com/rolling-scopes-school/tasks/blob/master/tasks/art-quiz/art-quiz.md)
 
