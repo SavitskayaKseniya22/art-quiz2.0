@@ -108,12 +108,12 @@ label {
 }
 
 //@import url('https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;600;700&family=Neucha&family=Righteous&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Neucha&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Neucha&display=swap");
 
 body {
   background-color: #363636;
   color: white;
-  font-family: 'Neucha', cursive;
+  font-family: "Neucha", cursive;
   min-width: 320px;
 
   .container {
@@ -121,21 +121,23 @@ body {
     min-width: 320px;
     height: 100vh;
     margin: 0 auto;
-    background: linear-gradient(90deg,
-        rgba(219, 190, 190, 0.45) 0%,
-        rgba(219, 190, 190, 0.45) 20%,
-        rgba(7, 175, 218, 1) 20%,
-        rgba(7, 175, 218, 1) 32%,
-        rgba(139, 195, 60, 1) 32%,
-        rgba(139, 195, 60, 1) 44%,
-        rgba(84, 99, 172, 1) 44%,
-        rgba(84, 99, 172, 1) 56%,
-        rgba(235, 12, 140, 1) 56%,
-        rgba(235, 12, 140, 1) 68%,
-        rgba(246, 143, 29, 1) 68%,
-        rgba(246, 143, 29, 1) 80%,
-        rgba(219, 190, 190, 0.45) 80%,
-        rgba(219, 190, 190, 0.45) 100%);
+    background: linear-gradient(
+      90deg,
+      rgba(219, 190, 190, 0.45) 0%,
+      rgba(219, 190, 190, 0.45) 20%,
+      rgba(7, 175, 218, 1) 20%,
+      rgba(7, 175, 218, 1) 32%,
+      rgba(139, 195, 60, 1) 32%,
+      rgba(139, 195, 60, 1) 44%,
+      rgba(84, 99, 172, 1) 44%,
+      rgba(84, 99, 172, 1) 56%,
+      rgba(235, 12, 140, 1) 56%,
+      rgba(235, 12, 140, 1) 68%,
+      rgba(246, 143, 29, 1) 68%,
+      rgba(246, 143, 29, 1) 80%,
+      rgba(219, 190, 190, 0.45) 80%,
+      rgba(219, 190, 190, 0.45) 100%
+    );
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -165,7 +167,7 @@ body {
       background-position: bottom;
       z-index: 99999;
       opacity: 1;
-      transition: .5s;
+      transition: 0.5s;
 
       &.displayNone {
         display: flex;
@@ -176,24 +178,17 @@ body {
       img {
         width: 100%;
       }
-
-
-
-
     }
-
-
   }
 
   .but-settings-toggle,
   .back-home-button,
   .but-repeate,
   .back-cat {
-
     width: 32px;
     height: 32px;
     opacity: 0.7;
-    transition: .5s;
+    transition: 0.5s;
 
     img {
       width: 100%;
@@ -235,7 +230,6 @@ body {
 
       &.back-home-button {
         left: 0;
-
       }
 
       &.back-cat {
@@ -243,10 +237,8 @@ body {
       }
 
       &.but-repeate {
-        left: calc(50% - 20px)
+        left: calc(50% - 20px);
       }
-
-
     }
   }
 
@@ -267,7 +259,6 @@ body {
     &.main-not-centered {
       align-items: unset;
     }
-
 
     .quiz-type,
     .cat-title,
@@ -328,7 +319,6 @@ body {
       padding: 20px 0;
       position: relative;
 
-
       .indicators {
         display: flex;
         flex-direction: row;
@@ -359,9 +349,7 @@ body {
         background-color: rgba(255, 0, 0, 0.5);
         text-align: right;
         z-index: 999999999;
-
       }
-
 
       .questionCard {
         height: 100%;
@@ -378,15 +366,13 @@ body {
           font-size: 28px;
           top: -40px;
           right: 10%;
-
-
         }
 
-        &>img {
+        & > img {
           position: relative;
           left: -500px;
           opacity: 0;
-          transition: .5s;
+          transition: 0.5s;
         }
 
         &.displayNone {
@@ -401,54 +387,42 @@ body {
           row-gap: 20px;
           align-content: center;
 
-          &>img {
-
+          & > img {
             cursor: pointer;
             width: 45%;
 
             margin: 0;
-
-
-
           }
 
-          &>h2 {
+          & > h2 {
             margin-bottom: 50px;
           }
-
         }
 
         h2 {
           font-size: 26px;
         }
 
-
-
         .possibleAnswers {
           display: flex;
           flex-direction: column;
           row-gap: 20px;
 
-
           &.displayNone {
             display: none;
           }
 
-          &>li {
+          & > li {
             padding: 10px;
             background-color: #3636367a;
             cursor: pointer;
-
           }
         }
 
-        &>img {
+        & > img {
           width: 100%;
         }
-
       }
-
-
     }
 
     .detailedResult {
@@ -462,7 +436,6 @@ body {
       }
 
       li {
-
         display: flex;
         flex-wrap: wrap;
         align-items: center;
@@ -490,19 +463,14 @@ body {
           padding: 10px;
         }
 
-
-        &>* {
+        & > * {
           width: 100%;
-
         }
 
         span {
           font-size: 16px;
-
         }
-
       }
-
     }
 
     .tempDiv {
@@ -532,8 +500,6 @@ body {
         justify-content: center;
         row-gap: 30px;
 
-
-
         h2 {
           font-size: 30px;
           text-align: center;
@@ -550,7 +516,6 @@ body {
         .nextQButton,
         .imgResult,
         .but-total {
-
           position: absolute;
           width: 30px;
           height: 30px;
@@ -567,34 +532,15 @@ body {
 
         .nextQButton,
         .but-total {
-
           right: 30px;
 
           img {
             width: 100%;
           }
-
         }
-
-
-
       }
     }
-
-
-
-
-
-
-
-
   }
-
-
-
-
-
-
 
   .settings-position {
     position: absolute;
@@ -604,14 +550,11 @@ body {
     background-color: transparent;
     z-index: 100;
 
-
-
-
     #but-settings-open {
       display: none;
     }
 
-    #but-settings-open:checked~.settings-popup {
+    #but-settings-open:checked ~ .settings-popup {
       display: flex;
     }
   }
@@ -632,14 +575,12 @@ body {
     box-shadow: 0px 0px 50px 90px #363636d7;
     transition: 0.5s;
 
-
     .cross-close {
       width: 15px;
       height: 15px;
       position: absolute;
       right: 20px;
       cursor: pointer;
-
     }
 
     h2 {
@@ -656,16 +597,15 @@ body {
       justify-content: space-between;
       row-gap: 20px;
 
-
-      &>li {
+      & > li {
         display: flex;
         flex-direction: column;
         row-gap: 10px;
         padding: 10px;
         background-color: #57574f38;
-        transition: .3s;
+        transition: 0.3s;
 
-        &:nth-child(2n+1) {
+        &:nth-child(2n + 1) {
           width: 75%;
         }
 
@@ -685,11 +625,10 @@ body {
           color: white;
 
           &:focus {
-            outline: none
-              /* Рамка при получении фокуса */
+            outline: none;
+            /* Рамка при получении фокуса */
           }
         }
-
       }
 
       .settings-block-content {
@@ -730,22 +669,17 @@ body {
         display: none;
       }
 
-      #toggle-button-timer:checked~label[name="off"],
-      #toggle-button-music:checked~label[name="off"],
-      #toggle-button-soundEffects:checked~label[name="off"] {
+      #toggle-button-timer:checked ~ label[name="off"],
+      #toggle-button-music:checked ~ label[name="off"],
+      #toggle-button-soundEffects:checked ~ label[name="off"] {
         display: none;
       }
 
-      #toggle-button-timer:checked~label[name="on"],
-      #toggle-button-music:checked~label[name="on"],
-      #toggle-button-soundEffects:checked~label[name="on"] {
+      #toggle-button-timer:checked ~ label[name="on"],
+      #toggle-button-music:checked ~ label[name="on"],
+      #toggle-button-soundEffects:checked ~ label[name="on"] {
         display: block;
       }
-
-
-
-
-
     }
 
     .but-set-list {
@@ -753,7 +687,6 @@ body {
       column-gap: 2%;
 
       width: 100%;
-
 
       li {
         flex-grow: 1;
@@ -834,11 +767,7 @@ body {
         .indicators {
           left: calc(50% - 122px);
           top: 101%;
-
-
-
         }
-
 
         .questionCard {
           height: 100%;
@@ -847,24 +776,21 @@ body {
           row-gap: 15px;
 
           .timerBox {
-
             width: 40px;
             font-size: 35px;
             top: -30px;
             right: -5%;
-
-
           }
 
           .possibleAnswers {
             row-gap: 10px;
 
-            &>li {
+            & > li {
               padding: 8px;
             }
           }
 
-          &>img {
+          & > img {
             margin: auto;
             width: 90%;
           }
@@ -872,11 +798,9 @@ body {
       }
 
       .tempDiv {
-
         row-gap: 20px;
 
         .tempDivCont {
-
           row-gap: 15px;
         }
       }
@@ -933,11 +857,7 @@ body {
         .indicators {
           left: calc(50% - 122px);
           top: 100%;
-
-
-
         }
-
 
         .questionCard {
           flex-direction: row;
@@ -946,46 +866,36 @@ body {
           column-gap: 20px;
 
           &.questionCardPaintings {
-
             column-gap: 15px;
             row-gap: 15px;
 
-            &>img {
+            & > img {
               width: 20%;
-
             }
-
           }
 
-          &>h2 {
+          & > h2 {
             flex-grow: 2;
           }
 
           .possibleAnswers {
             width: 30%;
-
           }
 
-          &>img {
-
+          & > img {
             max-width: 400px;
             max-height: 400px;
             margin: 0 auto;
-
-
           }
         }
       }
 
       .tempDiv {
-
         flex-direction: row;
         row-gap: 20px;
         column-gap: 20px;
         align-items: center;
         padding: 20px;
-
-
 
         a {
           width: 400px;
@@ -1001,9 +911,7 @@ body {
           .nextQButton,
           .imgResult,
           .but-total {
-
             bottom: 20px;
-
           }
         }
       }
@@ -1017,16 +925,18 @@ body {
 
   @media (min-width: 1920px) {
     .container {
-      background: linear-gradient(90deg,
-          rgba(7, 175, 218, 1) 20%,
-          rgba(139, 195, 60, 1) 20%,
-          rgba(139, 195, 60, 1) 40%,
-          rgba(84, 99, 172, 1) 40%,
-          rgba(84, 99, 172, 1) 60%,
-          rgba(235, 12, 140, 1) 60%,
-          rgba(235, 12, 140, 1) 80%,
-          rgba(246, 143, 29, 1) 80%,
-          rgba(246, 143, 29, 1) 99%);
+      background: linear-gradient(
+        90deg,
+        rgba(7, 175, 218, 1) 20%,
+        rgba(139, 195, 60, 1) 20%,
+        rgba(139, 195, 60, 1) 40%,
+        rgba(84, 99, 172, 1) 40%,
+        rgba(84, 99, 172, 1) 60%,
+        rgba(235, 12, 140, 1) 60%,
+        rgba(235, 12, 140, 1) 80%,
+        rgba(246, 143, 29, 1) 80%,
+        rgba(246, 143, 29, 1) 99%
+      );
     }
 
     .settings-popup {
@@ -1034,12 +944,10 @@ body {
     }
 
     main {
-
       .cat-title,
       .detailedResult {
         column-gap: 30px;
         row-gap: 40px;
-
 
         li {
           width: 250px;
@@ -1051,15 +959,10 @@ body {
       }
 
       .cat {
-
         padding: 0;
 
         .indicators {
           top: 98%;
-
-
-
-
 
           li {
             width: 30px;
@@ -1068,33 +971,24 @@ body {
           }
         }
 
-
         .questionCard {
-
-
           font-size: 20px;
           justify-content: center;
 
-
-
-          &>h2 {
+          & > h2 {
             flex-grow: 1;
             width: 100%;
             font-size: 30px;
           }
 
-          &>img {
+          & > img {
             max-width: 600px;
             max-height: 600px;
-
-
-
           }
         }
       }
 
       .tempDiv {
-
         padding: 80px;
 
         a {
@@ -1102,7 +996,6 @@ body {
           height: 600px;
         }
       }
-
     }
   }
 }

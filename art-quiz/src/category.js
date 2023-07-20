@@ -1,74 +1,67 @@
-import {
-  Tag,
-  nullCounts,
+import { Tag, nullCounts, aA, myStorage, slidePic } from "./questions.js";
 
-  aA,
-  myStorage,
-  slidePic
-} from "./questions.js";
+const quizType = document.querySelector(".quiz-type");
+export const mainBlock = document.querySelector("main");
+const backHomeButton = document.querySelector(".back-home-button");
 
-
-let quizType = document.querySelector(".quiz-type");
-export let mainBlock = document.querySelector("main");
-let backHomeButton = document.querySelector(".back-home-button");
-
-let backCat = document.querySelector(".back-cat");
+const backCat = document.querySelector(".back-cat");
 
 window.onunload = function () {
   backHomeButton.setAttribute("disabled", "true");
   backCat.setAttribute("disabled", "true");
-
-
-
-}
+};
 window.onload = function () {
   for (let i = 0; i < myStorage.length; i++) {
-    let key = `li${myStorage.key(i)}`;
-    let item = document.querySelector(key)
+    const key = `li${myStorage.key(i)}`;
+    const item = document.querySelector(key);
     if (item) {
-      for (let elem of item.childNodes) {
+      for (const elem of item.childNodes) {
         if (elem.classList.contains("numTotal")) {
-          elem.remove()
+          elem.remove();
         }
       }
-      let numTotal = new Tag("span", `${myStorage.getItem(key)} / 10`, "", "numTotal")
-      item.append(numTotal)
+      const numTotal = new Tag("span", `${myStorage.getItem(key)} / 10`, "", "numTotal");
+      item.append(numTotal);
       numTotal.addEventListener("click", function () {
-        backCat.removeAttribute("disabled")
-        let ul = new Tag("ul", "", "", "detailedResult")
+        backCat.removeAttribute("disabled");
+        const ul = new Tag("ul", "", "", "detailedResult");
         ul.innerHTML = myStorage.getItem(`${myStorage.key(i)}`);
-        for (let item of mainBlock.childNodes) {
+        for (const item of mainBlock.childNodes) {
           if (item.tagName) {
-            item.classList.add("displayNone")
+            item.classList.add("displayNone");
           }
         }
-        mainBlock.append(ul)
-        shiftRes()
-        for (let item of document.querySelectorAll(".detailedResult .linkFullSize")) {
+        mainBlock.append(ul);
+        shiftRes();
+        for (const item of document.querySelectorAll(".detailedResult .linkFullSize")) {
           item.addEventListener("click", function () {
-            let endI = (item.parentNode.childNodes[0].src.lastIndexOf("."))
-            let startI = (item.parentNode.childNodes[0].src.lastIndexOf("/"))
-            let num = item.parentNode.childNodes[0].src.slice(startI + 1, endI)
-            item.href = `https://raw.githubusercontent.com/irinainina/image-data/dadea6e2555841b3f136d8ab07ce6474391f1a3f/full/${num}full.jpg`
-          })
+            const endI = item.parentNode.childNodes[0].src.lastIndexOf(".");
+            const startI = item.parentNode.childNodes[0].src.lastIndexOf("/");
+            const num = item.parentNode.childNodes[0].src.slice(startI + 1, endI);
+            item.href = `https://raw.githubusercontent.com/irinainina/image-data/dadea6e2555841b3f136d8ab07ce6474391f1a3f/full/${num}full.jpg`;
+          });
         }
         document.addEventListener("click", function (event) {
-          if (event.target.closest(".back-home-button") || event.target.closest(".back-cat") || event.target.closest(".itemCloseButtomImg")) {
-            document.querySelector(".detailedResult").remove()
-            document.querySelector(".activeCat").classList.remove("displayNone")
+          if (
+            event.target.closest(".back-home-button") ||
+            event.target.closest(".back-cat") ||
+            event.target.closest(".itemCloseButtomImg")
+          ) {
+            document.querySelector(".detailedResult").remove();
+            document.querySelector(".activeCat").classList.remove("displayNone");
           }
-        })
-      })
+        });
+      });
     }
   }
-}
+};
 
 export function shiftRes() {
-  for (let item of document.querySelectorAll(".imgInRes")) {
+  for (const item of document.querySelectorAll(".imgInRes")) {
     item.addEventListener("click", function () {
       item.nextSibling.style.opacity = "0";
-      item.nextSibling.style.transition = "0.3s"
-      item.nextSibling.classList.toggle("displayNone")
+      item.nextSibling.style.transition = "0.3s";
+      item.nextSibling.classList.toggle("displayNone");
       if (!item.nextSibling.classList.contains("displayNone")) {
         setTimeout(() => {
           item.nextSibling.style.opacity = "1";
@@ -78,63 +71,55 @@ export function shiftRes() {
           item.nextSibling.style.transform = "translate(0px, 0px)";
         }, 600);
       }
-    })
+    });
   }
-
 }
 document.addEventListener("click", function (event) {
-
-
   if (event.target.closest(".quiz-type h2")) {
     quizType.classList.add("displayNone");
     mainBlock.classList.add("main-not-centered");
-    let list = document.querySelector(`.${event.target.id}`);
+    const list = document.querySelector(`.${event.target.id}`);
 
     list.classList.remove("displayNone");
     list.classList.add("activeCat");
-    backHomeButton.removeAttribute("disabled")
-
+    backHomeButton.removeAttribute("disabled");
   } else if (event.target.closest(".back-home-button")) {
     quizType.classList.remove("displayNone");
     mainBlock.classList.remove("main-not-centered");
-    backHomeButton.setAttribute("disabled", "true")
-    backCat.setAttribute("disabled", "true")
-    makeAllCatInvis()
-    makeAllQInvis()
-    makeAllCatInactive()
-    nullCounts(aA)
+    backHomeButton.setAttribute("disabled", "true");
+    backCat.setAttribute("disabled", "true");
+    makeAllCatInvis();
+    makeAllQInvis();
+    makeAllCatInactive();
+    nullCounts(aA);
     if (document.querySelector(".detailedResult")) {
-      document.querySelector(".detailedResult").remove()
+      document.querySelector(".detailedResult").remove();
     }
-
-
-
   } else if (event.target.closest(".back-cat")) {
-    backCat.setAttribute("disabled", "true")
-    makeAllQInvis()
-    document.querySelector(".activeCat").classList.remove("displayNone")
-    nullCounts(aA)
+    backCat.setAttribute("disabled", "true");
+    makeAllQInvis();
+    document.querySelector(".activeCat").classList.remove("displayNone");
+    nullCounts(aA);
     if (document.querySelector(".detailedResult")) {
-      document.querySelector(".detailedResult").remove()
+      document.querySelector(".detailedResult").remove();
     }
   }
-})
-
+});
 
 export function makeCat(arr, catName) {
-  let ul = new Tag("ul", "", "", "cat-title", catName, "displayNone")
+  const ul = new Tag("ul", "", "", "cat-title", catName, "displayNone");
   for (let i = 0; i < 12; i++) {
     let li;
     if (catName == "Artists") {
-      li = new Tag("li", "", "", "cat1", "cat", `subCat${i}`)
+      li = new Tag("li", "", "", "cat1", "cat", `subCat${i}`);
     } else {
-      li = new Tag("li", "", "", "cat2", "cat", `subCat${i}`)
+      li = new Tag("li", "", "", "cat2", "cat", `subCat${i}`);
     }
 
-    let h3 = new Tag("h3", `Round ${i+1}`, "")
+    const h3 = new Tag("h3", `Round ${i + 1}`, "");
     li.append(h3);
 
-    let img = new Tag("img", "", "")
+    const img = new Tag("img", "", "");
     img.style.filter = "blur(1px)";
 
     if (catName == "Artists") {
@@ -147,60 +132,49 @@ export function makeCat(arr, catName) {
 
     li.addEventListener("click", function (event) {
       if (!event.target.closest(".numTotal")) {
-        makeAllQInvis()
-        makeAllCatInvis()
-        backCat.removeAttribute("disabled")
+        makeAllQInvis();
+        makeAllCatInvis();
+        backCat.removeAttribute("disabled");
         let elem;
         if (catName == "Artists") {
-          elem = document.querySelector(`ul.cat1.subCat${i}`)
+          elem = document.querySelector(`ul.cat1.subCat${i}`);
         } else {
-          elem = document.querySelector(`ul.cat2.subCat${i}`)
+          elem = document.querySelector(`ul.cat2.subCat${i}`);
         }
-        elem.classList.remove("displayNone")
+        elem.classList.remove("displayNone");
 
+        // анимация для вариантов ответа
+        slidePic(elem.childNodes[0]);
 
-        //анимация для вариантов ответа
-        slidePic(elem.childNodes[0])
-
-        //таймер для первого
+        // таймер для первого
 
         if (myStorage.getItem("timer") == "true") {
           let timerBox;
           if (myStorage.getItem("timeToAnswer")) {
-            timerBox = new Tag("span", JSON.parse(myStorage.getItem("timeToAnswer")), "", "timerBox")
-            elem.childNodes[0].append(timerBox)
-
+            timerBox = new Tag("span", JSON.parse(myStorage.getItem("timeToAnswer")), "", "timerBox");
+            elem.childNodes[0].append(timerBox);
           } else {
-            timerBox = new Tag("span", 15, "", "timerBox")
-            elem.childNodes[0].append(timerBox)
+            timerBox = new Tag("span", 15, "", "timerBox");
+            elem.childNodes[0].append(timerBox);
           }
-          let timeDown = setInterval(() => {
-            let num = Number(timerBox.textContent)
+          const timeDown = setInterval(() => {
+            let num = Number(timerBox.textContent);
             num--;
             timerBox.textContent = num;
             if (num == 0) {
-              clearInterval(timeDown)
-              timerBox.remove()
+              clearInterval(timeDown);
+              timerBox.remove();
             }
             document.addEventListener("click", function (event) {
               if (event.target.closest(".back-home-button") || event.target.closest(".back-cat")) {
-                clearInterval(timeDown)
-                timerBox.remove()
+                clearInterval(timeDown);
+                timerBox.remove();
               }
-            })
+            });
           }, 1000);
-
         }
-
-
-
-
-
-
-
       }
-
-    })
+    });
 
     ul.append(li);
   }
@@ -208,32 +182,32 @@ export function makeCat(arr, catName) {
 }
 
 export async function getImgs() {
-  let arrImgs = [];
+  const arrImgs = [];
   for (let i = 0; i <= 240; i++) {
     arrImgs.push(
-      `https://raw.githubusercontent.com/irinainina/image-data/dadea6e2555841b3f136d8ab07ce6474391f1a3f/img/${i}.jpg`
+      `https://raw.githubusercontent.com/irinainina/image-data/dadea6e2555841b3f136d8ab07ce6474391f1a3f/img/${i}.jpg`,
     );
   }
   return arrImgs;
 }
 
 function makeAllQInvis() {
-  let colection = document.querySelectorAll("ul.cat");
-  for (let item of colection) {
-    item.classList.add("displayNone")
+  const colection = document.querySelectorAll("ul.cat");
+  for (const item of colection) {
+    item.classList.add("displayNone");
   }
 }
 
 function makeAllCatInvis() {
-  let colection = document.querySelectorAll("ul.cat-title");
-  for (let item of colection) {
-    item.classList.add("displayNone")
+  const colection = document.querySelectorAll("ul.cat-title");
+  for (const item of colection) {
+    item.classList.add("displayNone");
   }
 }
 
 function makeAllCatInactive() {
-  let colection = document.querySelectorAll("ul.cat-title");
-  for (let item of colection) {
-    item.classList.remove("activeCat")
+  const colection = document.querySelectorAll("ul.cat-title");
+  for (const item of colection) {
+    item.classList.remove("activeCat");
   }
 }
