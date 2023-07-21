@@ -9,15 +9,18 @@ import Footer from "./modules/footer/Footer";
 import Settings from "./modules/settings/Settings";
 
 class App {
+  settings: Settings;
+
   constructor() {
-    console.log(this);
+    this.settings = new Settings();
   }
 
   addListener() {
+    this.settings.addListener();
     return this;
   }
 
-  static content() {
+  content() {
     return `
     ${Header.content()}
       <main>
@@ -29,14 +32,14 @@ class App {
             <h2 id="Paintings">Paintings</h2>
           </li>
         </ul>
-        ${Settings.content()}
+        ${this.settings.content()}
       </main>
       ${Footer.content()}
     `;
   }
 
   render(container: HTMLBodyElement) {
-    container.insertAdjacentHTML("afterbegin", App.content());
+    container.insertAdjacentHTML("afterbegin", this.content());
     return this;
   }
 }

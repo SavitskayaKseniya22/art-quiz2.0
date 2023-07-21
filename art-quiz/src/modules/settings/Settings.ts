@@ -1,11 +1,58 @@
 import "./settings.scss";
 
+const MAX_TIMER_VALUE = 30;
+const MIN_TIMER_VALUE = 5;
+
 class Settings {
+  timerValue: number;
+
   constructor() {
-    console.log(this);
+    this.timerValue = Number(Settings.readStorage("timerValue")) || 15;
   }
 
-  static content() {
+  static writeStorage(key: string, value: string) {
+    window.localStorage.setItem(key, value);
+  }
+
+  static readStorage(value: string) {
+    return window.localStorage.getItem(value);
+  }
+
+  addListener() {
+    document.addEventListener("click", (event) => {
+      const { target } = event;
+      if (target && target instanceof HTMLElement) {
+        if (target.closest(".settings__timer_update")) {
+          const timerUpdateButton = target.closest(".settings__timer_update") as HTMLElement;
+          const { modifier } = timerUpdateButton.dataset;
+
+          if (modifier === "increase" || modifier === "decrease") {
+            this.timerValue = Settings.calculateTimerValue(modifier, this.timerValue, MAX_TIMER_VALUE, MIN_TIMER_VALUE);
+            const answerTimeContainer = document.querySelector(".settings__answer-time");
+            if (answerTimeContainer) {
+              answerTimeContainer.textContent = String(this.timerValue);
+            }
+          }
+        }
+      }
+    });
+
+    window.addEventListener("beforeunload", () => {
+      Settings.writeStorage("timerValue", String(this.timerValue));
+    });
+  }
+
+  static calculateTimerValue(type: "increase" | "decrease", currentValue: number, maxValue: number, minValue: number) {
+    if (type === "increase" && currentValue < maxValue) {
+      return currentValue + 5;
+    }
+    if (type === "decrease" && currentValue > minValue) {
+      return currentValue - 5;
+    }
+    return currentValue;
+  }
+
+  content() {
     return `
         <div class="settings">
   <input type="checkbox" id="settings__toggle" />
@@ -38,11 +85,11 @@ class Settings {
     <li class="settings__timer">
       <h3>Time to answer</h3>
       <div class="settings__block-content">
-        <button class="settings__timer_down">
+        <button class="settings__timer_update" data-modifier="decrease">
           <i class="bx bx-minus"></i>
         </button>
-        <span class="settings__answer-time" data-answer-time>15</span>
-        <button class="settings__timer_up">
+        <span class="settings__answer-time">${this.timerValue}</span>
+        <button class="settings__timer_update" data-modifier="increase">
           <i class="bx bx-plus"></i>
         </button>
       </div>
