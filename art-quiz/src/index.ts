@@ -6,6 +6,7 @@ import "normalize.css";
 import "./style.scss";
 import Header from "./modules/header/Header";
 import Footer from "./modules/footer/Footer";
+import Settings from "./modules/settings/Settings";
 
 class App {
   constructor() {
@@ -28,6 +29,7 @@ class App {
             <h2 id="Paintings">Paintings</h2>
           </li>
         </ul>
+        ${Settings.content()}
       </main>
       ${Footer.content()}
     `;

@@ -1,19 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Neucha&display=swap");
 
 h1,
-h2,
 h3,
 h4,
 h5,
 h6,
-p {
+p,
+ul,
+button {
   padding: 0;
   margin: 0;
 }
 
 ul {
   list-style: none;
-  padding: 0;
 }
 
 a,
@@ -25,8 +25,6 @@ button {
   cursor: pointer;
   border: none;
   background-color: transparent;
-  padding: 0;
-  margin: 0;
 }
 
 *,
@@ -49,6 +47,7 @@ body {
   font-family: "Neucha", cursive;
   background-color: rgba(219, 190, 190, 0.451);
   width: 100vw;
+  min-width: 320px;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -71,6 +70,19 @@ body {
     rgba(255, 255, 255) 80%,
     rgba(255, 255, 255) 100%
   );
+
+  h1 {
+    color: gold;
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  h3 {
+    font-size: 1rem;
+  }
 
   .but-repeate {
     width: 32px;
@@ -101,12 +113,8 @@ body {
     justify-content: center;
     row-gap: 30px;
 
-    h3 {
-      font-size: 26px;
-    }
-
     p {
-      font-size: 32px;
+      font-size: 2rem;
     }
 
     button {
@@ -137,7 +145,6 @@ body {
     align-items: center;
     padding: 10%;
     overflow-y: auto;
-    font-size: 40px;
 
     &.main-not-centered {
       align-items: unset;
@@ -163,13 +170,6 @@ body {
         background-color: rgb(87, 87, 79);
         cursor: pointer;
         color: white;
-
-        h2 {
-          display: block;
-          width: 100%;
-          height: 100%;
-          padding: 20px;
-        }
       }
     }
 
@@ -185,11 +185,6 @@ body {
       li {
         width: 150px;
         padding: 10px;
-
-        h3 {
-          font-size: 16px;
-          margin-bottom: 10px;
-        }
 
         img {
           width: 100%;
@@ -240,13 +235,13 @@ body {
         flex-direction: column;
         justify-content: space-between;
         row-gap: 20px;
-        font-size: 16px;
+        font-size: 1rem;
         position: relative;
 
         .timerBox {
           position: absolute;
           width: 30px;
-          font-size: 28px;
+          font-size: 2rem;
           top: -40px;
           right: 10%;
         }
@@ -276,14 +271,6 @@ body {
 
             margin: 0;
           }
-
-          & > h2 {
-            margin-bottom: 50px;
-          }
-        }
-
-        h2 {
-          font-size: 26px;
         }
 
         .possibleAnswers {
@@ -310,7 +297,7 @@ body {
 
     .detailedResult {
       position: absolute;
-      font-size: 14px;
+      font-size: 1rem;
 
       .itemCloseButtomImg {
         position: fixed;
@@ -351,7 +338,7 @@ body {
         }
 
         span {
-          font-size: 16px;
+          font-size: 1rem;
         }
       }
     }
@@ -383,17 +370,8 @@ body {
         justify-content: center;
         row-gap: 30px;
 
-        h2 {
-          font-size: 30px;
-          text-align: center;
-        }
-
-        h3 {
-          font-size: 20px;
-        }
-
         span {
-          font-size: 18px;
+          font-size: 1rem;
         }
 
         .nextQButton,
@@ -431,6 +409,18 @@ body {
       background-position: left 300px bottom 620px;
     }
 
+    h1 {
+      font-size: 2rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+    }
+
     main {
       padding: 5%;
 
@@ -444,10 +434,6 @@ body {
 
         li {
           width: 200px;
-
-          h3 {
-            font-size: 20px;
-          }
         }
       }
 
@@ -468,7 +454,7 @@ body {
 
           .timerBox {
             width: 40px;
-            font-size: 35px;
+            font-size: 2.5rem;
             top: -30px;
             right: -5%;
           }
@@ -535,10 +521,6 @@ body {
             }
           }
 
-          & > h2 {
-            flex-grow: 2;
-          }
-
           .possibleAnswers {
             width: 30%;
           }
@@ -603,10 +585,6 @@ body {
 
         li {
           width: 250px;
-
-          h3 {
-            font-size: 25px;
-          }
         }
       }
 
@@ -624,14 +602,8 @@ body {
         }
 
         .questionCard {
-          font-size: 20px;
+          font-size: 1.25rem;
           justify-content: center;
-
-          & > h2 {
-            flex-grow: 1;
-            width: 100%;
-            font-size: 30px;
-          }
 
           & > img {
             max-width: 600px;

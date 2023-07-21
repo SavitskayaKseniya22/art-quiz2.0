@@ -3,12 +3,6 @@ header {
   background-color: #3636367a;
   position: relative;
 
-  h1 {
-    color: gold;
-    font-size: 3rem;
-    margin: 0;
-  }
-
   nav {
     position: absolute;
     top: 0;
@@ -45,8 +39,5 @@ header {
 @media (min-width: 768px) {
   header {
     padding: 2rem;
-    h1 {
-      font-size: 4rem;
-    }
   }
 }

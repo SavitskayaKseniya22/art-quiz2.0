@@ -15,7 +15,7 @@ class Header {
           <button class="back-cat" disabled>
             <i class='bx bxs-widget'></i>
           </button>
-          <label class="but-settings-toggle" for="but-settings-open">
+          <label class="but-settings-toggle" for="settings__toggle">
           <i class='bx bx-cog' ></i>
           </label>
         </nav>
