@@ -1,3 +1,5 @@
+import i18next from "i18next";
+
 import "./settings.scss";
 
 const MAX_TIMER_VALUE = 30;
@@ -49,6 +51,13 @@ class Settings {
       const timerContainer = document.querySelector(".settings__timer");
       this.timerDisabled = checked;
       timerContainer?.setAttribute("disabled", String(!checked));
+    });
+
+    document.querySelectorAll("input[name='settings__language']")?.forEach((elem) => {
+      elem.addEventListener("change", (event) => {
+        const lang = (event.target as HTMLInputElement).value;
+        i18next.changeLanguage(lang);
+      });
     });
 
     window.addEventListener("beforeunload", () => {
@@ -123,7 +132,7 @@ class Settings {
       <div class="settings__block-content">
         <input type="radio" id="settings__language_ru" name="settings__language" value="ru" />
         <label for="settings__language_ru">ru</label>
-        <input type="radio" id="settings__language_en" name="settings__language" value="en" checked />
+        <input type="radio" id="settings__language_en" name="settings__language" value="en" />
         <label for="settings__language_en">en</label>
       </div>
     </li>
