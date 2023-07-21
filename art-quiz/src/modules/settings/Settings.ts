@@ -6,16 +6,23 @@ const MIN_TIMER_VALUE = 5;
 class Settings {
   timerValue: number;
 
+  timerDisabled: boolean;
+
   constructor() {
     this.timerValue = Number(Settings.readStorage("timerValue")) || 15;
+    this.timerDisabled = Settings.readStorage("timerDisabled") || false;
   }
 
-  static writeStorage(key: string, value: string) {
-    window.localStorage.setItem(key, value);
+  static writeStorage(key: string, value: string | number | boolean) {
+    window.localStorage.setItem(key, JSON.stringify(value));
   }
 
   static readStorage(value: string) {
-    return window.localStorage.getItem(value);
+    const item = window.localStorage.getItem(value);
+    if (item) {
+      return JSON.parse(item);
+    }
+    return null;
   }
 
   addListener() {
@@ -37,8 +44,16 @@ class Settings {
       }
     });
 
+    document.querySelector("#settings__toggle-timer")?.addEventListener("change", (event) => {
+      const { checked } = event.target as HTMLInputElement;
+      const timerContainer = document.querySelector(".settings__timer");
+      this.timerDisabled = checked;
+      timerContainer?.setAttribute("disabled", String(!checked));
+    });
+
     window.addEventListener("beforeunload", () => {
-      Settings.writeStorage("timerValue", String(this.timerValue));
+      Settings.writeStorage("timerValue", this.timerValue);
+      Settings.writeStorage("timerDisabled", this.timerDisabled);
     });
   }
 
@@ -82,7 +97,7 @@ class Settings {
     </li>
     
 
-    <li class="settings__timer">
+    <li class="settings__timer" disabled=${!this.timerDisabled}>
       <h3>Time to answer</h3>
       <div class="settings__block-content">
         <button class="settings__timer_update" data-modifier="decrease">
@@ -98,7 +113,7 @@ class Settings {
     <li class="settings__timer-toggle">
       <h3>Timer</h3>
       <div class="settings__block-content">
-        <input type="checkbox" id="settings__toggle-timer" class="settings__toggle" />
+        <input type="checkbox" id="settings__toggle-timer" ${this.timerDisabled ? "checked" : ""} />
         <label for="settings__toggle-timer" name="off">Off</label>
         <label for="settings__toggle-timer" name="on">On</label>
       </div>
