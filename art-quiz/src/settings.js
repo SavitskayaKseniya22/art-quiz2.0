@@ -1,11 +1,11 @@
-import { myStorage } from "./questions.js";
+// import { myStorage } from "./questions.js";
 
 export const soundEffects = {
   correctAnswer: "./sounds/correctA.mp3",
   wrongAnswer: "./sounds/wrongA.mp3",
   endOfRound: "./sounds/endOfRound.mp3",
 };
-
+/*
 export class Settings {
   constructor() {
     this.name = "settings";
@@ -18,27 +18,27 @@ export class Settings {
     this._timerValue;
     this._timerStep;
 
-    this._language = "en";
+    this._settings__language = "en";
 
     // кнопка отключить\включить звук
-    const music = document.querySelector("input[id='toggle-button-music']");
+    const music = document.querySelector("input[id='settings__toggle-music']");
     const audioMusic = document.querySelector("audio.music");
-    const volumeMusic = document.querySelector(".volumeMusic");
+    const music-volume__range-input = document.querySelector(".music-volume__range-input");
 
     let tempVol;
 
-    if (myStorage.getItem("volumeMusic")) {
-      audioMusic.volume = JSON.parse(myStorage.getItem("volumeMusic"));
-      volumeMusic.value = audioMusic.volume;
+    if (myStorage.getItem("music-volume__range-input")) {
+      audioMusic.volume = JSON.parse(myStorage.getItem("music-volume__range-input"));
+      music-volume__range-input.value = audioMusic.volume;
     } else {
       audioMusic.volume = "0.5";
-      volumeMusic.value = audioMusic.volume;
+      music-volume__range-input.value = audioMusic.volume;
     }
     // кнопка сделать активным инпут рендж
 
-    volumeMusic.addEventListener("input", function () {
-      audioMusic.volume = volumeMusic.value;
-      myStorage.setItem("volumeMusic", JSON.stringify(audioMusic.volume));
+    music-volume__range-input.addEventListener("input", function () {
+      audioMusic.volume = music-volume__range-input.value;
+      myStorage.setItem("music-volume__range-input", JSON.stringify(audioMusic.volume));
       tempVol = audioMusic.volume;
       if (audioMusic.volume == 0) {
         audioMusic.muted = true;
@@ -54,25 +54,25 @@ export class Settings {
       }
     });
     // кнопка сделать громкость минимальной
-    let musicMuteBut = document.querySelector(".musicSet .but-volume-off ");
+    let musicMuteBut = document.querySelector(".music-volume__range .music-volume__off ");
     musicMuteBut.addEventListener("click", function () {
       if (audioMusic.muted && audioMusic.volume > 0) {
         musicMuteBut.style.backgroundImage = 'url("./images/volumeOf.svg")';
         audioMusic.muted = false;
-        volumeMusic.value = audioMusic.volume;
+        music-volume__range-input.value = audioMusic.volume;
       } else {
         musicMuteBut.style.backgroundImage = 'url("./images/volumeOfActive.svg")';
         musicLoudBut.style.backgroundImage = 'url("./images/volumeOn.svg")';
         audioMusic.muted = true;
-        volumeMusic.value = 0;
+        music-volume__range-input.value = 0;
       }
     });
 
     // кнопка сделать громкость максимальной
-    let musicLoudBut = document.querySelector(".musicSet .but-volume-on");
+    let musicLoudBut = document.querySelector(".music-volume__range .music-volume__on");
     musicLoudBut.addEventListener("click", function () {
-      volumeMusic.classList.toggle("loud");
-      if (volumeMusic.classList.contains("loud")) {
+      music-volume__range-input.classList.toggle("loud");
+      if (music-volume__range-input.classList.contains("loud")) {
         musicLoudBut.style.backgroundImage = 'url("./images/volumeOnActive.svg")';
         if (audioMusic.muted) {
           audioMusic.muted = false;
@@ -80,38 +80,38 @@ export class Settings {
         }
         tempVol = audioMusic.volume;
         audioMusic.volume = 1;
-        volumeMusic.value = audioMusic.volume;
+        music-volume__range-input.value = audioMusic.volume;
       } else {
         audioMusic.volume = tempVol;
         musicLoudBut.style.backgroundImage = 'url("./images/volumeOn.svg")';
       }
-      volumeMusic.value = audioMusic.volume;
+      music-volume__range-input.value = audioMusic.volume;
     });
 
     // отключить музыку\включить музыку
-    const musicSet = document.querySelector(".musicSet");
+    const music-volume__range = document.querySelector(".music-volume__range");
 
     if (myStorage.getItem("music")) {
       this.music = JSON.parse(myStorage.getItem("music"));
       music.checked = this.music;
       if (this.music === false) {
         audioMusic.pause();
-        volumeMusic.setAttribute("disabled", "true");
-        musicSet.style.opacity = "0.5";
+        music-volume__range-input.setAttribute("disabled", "true");
+        music-volume__range.style.opacity = "0.5";
       } else {
         const event = new Event("click");
-        musicSet.dispatchEvent(event);
+        music-volume__range.dispatchEvent(event);
         audioMusic.play();
-        volumeMusic.removeAttribute("disabled");
-        musicSet.style.opacity = "1";
+        music-volume__range-input.removeAttribute("disabled");
+        music-volume__range.style.opacity = "1";
       }
     } else {
       this.music = false;
       myStorage.setItem("music", JSON.stringify(this.music));
       music.checked = this.music;
       audioMusic.pause();
-      volumeMusic.setAttribute("disabled", "true");
-      musicSet.style.opacity = "0.5";
+      music-volume__range-input.setAttribute("disabled", "true");
+      music-volume__range.style.opacity = "0.5";
     }
 
     music.onchange = function () {
@@ -119,17 +119,17 @@ export class Settings {
       myStorage.setItem("music", JSON.stringify(this.music));
       if (this.music === false) {
         audioMusic.pause();
-        volumeMusic.setAttribute("disabled", "true");
-        musicSet.style.opacity = "0.5";
+        music-volume__range-input.setAttribute("disabled", "true");
+        music-volume__range.style.opacity = "0.5";
       } else {
         audioMusic.play();
-        volumeMusic.removeAttribute("disabled");
-        musicSet.style.opacity = "1";
+        music-volume__range-input.removeAttribute("disabled");
+        music-volume__range.style.opacity = "1";
       }
     };
 
-    const soundEffects = document.querySelector("input[id='toggle-button-soundEffects']");
-    const soundSet = document.querySelector(".soundSet");
+    const soundEffects = document.querySelector("input[id='settings__toggle-soundEffects']");
+    const settings__effects-volume-range = document.querySelector(".settings__effects-volume-range");
     const volumeSoundEffects = document.querySelector(".volumeSoundEffects");
 
     if (myStorage.getItem("soundEffects")) {
@@ -137,17 +137,17 @@ export class Settings {
       soundEffects.checked = this.soundEffects;
       if (this.soundEffects === false) {
         volumeSoundEffects.setAttribute("disabled", "true");
-        soundSet.style.opacity = "0.5";
+        settings__effects-volume-range.style.opacity = "0.5";
       } else {
         volumeSoundEffects.removeAttribute("disabled");
-        soundSet.style.opacity = "1";
+        settings__effects-volume-range.style.opacity = "1";
       }
     } else {
       this.soundEffects = false;
       myStorage.setItem("soundEffects", JSON.stringify(this.soundEffects));
       soundEffects.checked = this.soundEffects;
       volumeSoundEffects.setAttribute("disabled", "true");
-      soundSet.style.opacity = "0.5";
+      settings__effects-volume-range.style.opacity = "0.5";
     }
 
     soundEffects.onchange = function () {
@@ -155,10 +155,10 @@ export class Settings {
       myStorage.setItem("soundEffects", JSON.stringify(this.soundEffects));
       if (this.soundEffects === false) {
         volumeSoundEffects.setAttribute("disabled", "true");
-        soundSet.style.opacity = "0.5";
+        settings__effects-volume-range.style.opacity = "0.5";
       } else {
         volumeSoundEffects.removeAttribute("disabled");
-        soundSet.style.opacity = "1";
+        settings__effects-volume-range.style.opacity = "1";
       }
     };
 
@@ -175,86 +175,86 @@ export class Settings {
       myStorage.setItem("volumeSoundEffects", JSON.stringify(this.volumeSoundEffects));
     });
 
-    const timerSet = document.querySelector(".timerSet");
-    const timer = document.querySelector("input[id='toggle-button-timer']");
-    const timeToAnswer = document.querySelector(".timeToAnswer");
+    const settings__timer = document.querySelector(".settings__timer");
+    const timer = document.querySelector("input[id='settings__toggle-timer']");
+    const settings__answer-time = document.querySelector(".settings__answer-time");
 
     if (myStorage.getItem("timer")) {
       this.timer = JSON.parse(myStorage.getItem("timer"));
       timer.checked = this.timer;
       if (this.timer === false) {
-        timeToAnswer.setAttribute("disabled", "true");
-        timerSet.style.opacity = "0.5";
+        settings__answer-time.setAttribute("disabled", "true");
+        settings__timer.style.opacity = "0.5";
       } else {
-        timeToAnswer.removeAttribute("disabled");
-        timerSet.style.opacity = "1";
+        settings__answer-time.removeAttribute("disabled");
+        settings__timer.style.opacity = "1";
       }
     } else {
       this.timer = false;
       myStorage.setItem("timer", JSON.stringify(this.timer));
       timer.checked = this.timer;
-      timeToAnswer.setAttribute("disabled", "true");
-      timerSet.style.opacity = "0.5";
+      settings__answer-time.setAttribute("disabled", "true");
+      settings__timer.style.opacity = "0.5";
     }
 
     timer.onchange = function () {
       this.timer = timer.checked;
       myStorage.setItem("timer", JSON.stringify(this.timer));
       if (this.timer === false) {
-        timeToAnswer.setAttribute("disabled", "true");
-        timerSet.style.opacity = "0.5";
+        settings__answer-time.setAttribute("disabled", "true");
+        settings__timer.style.opacity = "0.5";
       } else {
-        timeToAnswer.removeAttribute("disabled");
-        timerSet.style.opacity = "1";
+        settings__answer-time.removeAttribute("disabled");
+        settings__timer.style.opacity = "1";
       }
     };
 
-    const timerSetDown = document.querySelector(".timerSet .but-time-down");
-    const timerSetUp = document.querySelector(".timerSet .but-time-up");
+    const settings__timerDown = document.querySelector(".settings__timer .settings__timer_down");
+    const settings__timerUp = document.querySelector(".settings__timer .settings__timer_up");
 
-    if (myStorage.getItem("timeToAnswer")) {
-      this.timerValue = JSON.parse(myStorage.getItem("timeToAnswer"));
-      timeToAnswer.value = this.timerValue;
+    if (myStorage.getItem("settings__answer-time")) {
+      this.timerValue = JSON.parse(myStorage.getItem("settings__answer-time"));
+      settings__answer-time.value = this.timerValue;
     } else {
-      this.timerValue = timeToAnswer.value;
-      myStorage.setItem("timeToAnswer", JSON.stringify(this.timerValue));
+      this.timerValue = settings__answer-time.value;
+      myStorage.setItem("settings__answer-time", JSON.stringify(this.timerValue));
     }
 
-    timerSetDown.onclick = function () {
-      if (!timeToAnswer.hasAttribute("disabled")) {
+    settings__timerDown.onclick = function () {
+      if (!settings__answer-time.hasAttribute("disabled")) {
         this.timerStep = 5;
-        this.timerValue = Number(timeToAnswer.value);
+        this.timerValue = Number(settings__answer-time.value);
         if (this.timerValue >= 10 && this.timerValue <= 35) this.timerValue -= this.timerStep;
-        timeToAnswer.value = this.timerValue;
-        myStorage.setItem("timeToAnswer", JSON.stringify(this.timerValue));
+        settings__answer-time.value = this.timerValue;
+        myStorage.setItem("settings__answer-time", JSON.stringify(this.timerValue));
       }
     };
-    timerSetUp.onclick = function () {
-      if (!timeToAnswer.hasAttribute("disabled")) {
+    settings__timerUp.onclick = function () {
+      if (!settings__answer-time.hasAttribute("disabled")) {
         this.timerStep = 5;
-        this.timerValue = Number(timeToAnswer.value);
+        this.timerValue = Number(settings__answer-time.value);
         if (this.timerValue >= 0 && this.timerValue <= 25) this.timerValue += this.timerStep;
-        timeToAnswer.value = this.timerValue;
-        myStorage.setItem("timeToAnswer", JSON.stringify(this.timerValue));
+        settings__answer-time.value = this.timerValue;
+        myStorage.setItem("settings__answer-time", JSON.stringify(this.timerValue));
       }
     };
 
-    const languages = document.querySelectorAll("input[name='radioButtonLang']");
+    const settings__languages = document.querySelectorAll("input[name='settings__language']");
 
-    if (myStorage.getItem("language")) {
-      this.language = JSON.parse(myStorage.getItem("language"));
-      for (const item of languages) {
+    if (myStorage.getItem("settings__language")) {
+      this.settings__language = JSON.parse(myStorage.getItem("settings__language"));
+      for (const item of settings__languages) {
         item.removeAttribute("checked");
-        if (item.value == this.language) {
+        if (item.value == this.settings__language) {
           item.setAttribute("checked", "checked");
         }
       }
     }
 
-    for (const item of languages) {
+    for (const item of settings__languages) {
       item.onchange = function () {
-        this.language = item.value;
-        myStorage.setItem("language", JSON.stringify(this.language));
+        this.settings__language = item.value;
+        myStorage.setItem("settings__language", JSON.stringify(this.settings__language));
       };
     }
   }
@@ -291,12 +291,12 @@ export class Settings {
     return this._timer;
   }
 
-  set language(value) {
-    this._language = value;
+  set settings__language(value) {
+    this._settings__language = value;
   }
 
-  get language() {
-    return this._language;
+  get settings__language() {
+    return this._settings__language;
   }
 
   set timerValue(value) {
@@ -323,4 +323,6 @@ export class Settings {
   readFromStorage() {
     return JSON.parse(myStorage.getItem(this.name));
   }
-}
+} */
+
+export default soundEffects;

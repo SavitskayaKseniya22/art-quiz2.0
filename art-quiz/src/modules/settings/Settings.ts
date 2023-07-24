@@ -78,8 +78,9 @@ class Settings {
 
   content() {
     return `
+     <input type="checkbox" id="settings__toggle" />
         <div class="settings">
-  <input type="checkbox" id="settings__toggle" />
+ 
   <label for="settings__toggle" class="settings__close-button">
   <i class='bx bx-x'></i>
   </label>

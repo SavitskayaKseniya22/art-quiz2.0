@@ -1,12 +1,14 @@
-import { makeCat, getImgs, mainBlock } from "./category";
-import images from "./images";
-import { fillCat, getAllImages, QuestionArtist, QuestionPaintings } from "./questions";
-import "boxicons";
-import "normalize.css";
-import "./style.scss";
+// import { makeCat, getImgs, mainBlock } from "./category";
+// import { fillCat, getAllImages, QuestionArtist, QuestionPaintings } from "./questions";
 import Header from "./modules/header/Header";
 import Footer from "./modules/footer/Footer";
 import Settings from "./modules/settings/Settings";
+import "boxicons";
+import "normalize.css";
+import "./style.scss";
+import "./i18n";
+import Categories from "./modules/categories/Categories";
+import images from "./images";
 
 class App {
   settings: Settings;
@@ -17,6 +19,19 @@ class App {
 
   addListener() {
     this.settings.addListener();
+
+    window.addEventListener("hashchange", () => {
+      const { hash } = document.location;
+      if (hash === "#paintings" || hash === "#artists") {
+        const page = new Categories(hash, images);
+        page.addListener();
+        const main = document.querySelector("main");
+        if (main) {
+          main.innerHTML = page.content();
+        }
+      }
+    });
+
     return this;
   }
 
@@ -26,14 +41,14 @@ class App {
       <main>
         <ul class="quiz-type">
           <li>
-            <h2 id="Artists">Artists</h2>
+            <h2 id="Artists"><a href="#artists">Artists</a></h2>
           </li>
           <li>
-            <h2 id="Paintings">Paintings</h2>
+            <h2 id="Paintings"><a href="#paintings">Paintings</a></h2>
           </li>
         </ul>
-        ${this.settings.content()}
       </main>
+      ${this.settings.content()}
       ${Footer.content()}
     `;
   }
@@ -43,7 +58,7 @@ class App {
     return this;
   }
 }
-
+/*
 getImgs().then((value) => {
   makeCat(value, "Artists");
   makeCat(value, "Paintings");
@@ -53,7 +68,7 @@ getImgs().then((value) => {
   });
 });
 
-// new Settings();
+new Settings(); */
 
 const body = document.querySelector("body");
 if (body) {

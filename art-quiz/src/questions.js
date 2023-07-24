@@ -1,3 +1,4 @@
+/*
 import { mainBlock, shiftRes } from "./category.js";
 import { soundEffects } from "./settings";
 
@@ -359,8 +360,8 @@ function getNext() {
     // таймер для всех кроме первого
     if (myStorage.getItem("timer") == "true") {
       let timerBox;
-      if (myStorage.getItem("timeToAnswer")) {
-        timerBox = new Tag("span", JSON.parse(myStorage.getItem("timeToAnswer")), "", "timerBox");
+      if (myStorage.getItem("settings__answer-time")) {
+        timerBox = new Tag("span", JSON.parse(myStorage.getItem("settings__answer-time")), "", "timerBox");
         tempDiv.parentNode.nextSibling.append(timerBox);
       } else {
         timerBox = new Tag("span", 15, "", "timerBox");
@@ -527,3 +528,4 @@ function slowSlide(item) {
     item.style.transform = "scale(2)";
   }, 1200);
 }
+*/

@@ -1,3 +1,4 @@
+/*
 import { Tag, nullCounts, aA, myStorage, slidePic } from "./questions.js";
 
 const quizType = document.querySelector(".quiz-type");
@@ -150,8 +151,8 @@ export function makeCat(arr, catName) {
 
         if (myStorage.getItem("timer") == "true") {
           let timerBox;
-          if (myStorage.getItem("timeToAnswer")) {
-            timerBox = new Tag("span", JSON.parse(myStorage.getItem("timeToAnswer")), "", "timerBox");
+          if (myStorage.getItem("settings__answer-time")) {
+            timerBox = new Tag("span", JSON.parse(myStorage.getItem("settings__answer-time")), "", "timerBox");
             elem.childNodes[0].append(timerBox);
           } else {
             timerBox = new Tag("span", 15, "", "timerBox");
@@ -211,3 +212,4 @@ function makeAllCatInactive() {
     item.classList.remove("activeCat");
   }
 }
+*/

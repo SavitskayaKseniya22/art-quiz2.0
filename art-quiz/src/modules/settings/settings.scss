@@ -3,7 +3,7 @@
 }
 
 #settings__toggle:checked ~ .settings {
-  display: flex;
+  display: block;
 }
 
 .settings {
@@ -11,7 +11,7 @@
   bottom: 0.5rem;
   right: 0.5rem;
   z-index: 999;
-  //display: none;
+  display: none;
   min-width: 300px;
   max-width: 400px;
   padding: 1rem;
