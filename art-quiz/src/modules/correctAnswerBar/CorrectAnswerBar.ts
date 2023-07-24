@@ -1,3 +1,5 @@
+import "./correctAnswerBar.scss";
+
 class CorrectAnswerBar {
   correct: number;
 
@@ -13,8 +15,12 @@ class CorrectAnswerBar {
     }
   }
 
-  increaseCorrectValue() {
-    this.correct += 1;
+  updateCorrectValue(isItCorrect: boolean) {
+    this.correct += +isItCorrect;
+  }
+
+  resetCorrectValue() {
+    this.correct = 0;
   }
 
   static content() {

@@ -1,26 +1,33 @@
 import { ImageType } from "../../interfaces";
 import images from "../../images";
-import { getImages, random, shuffle } from "../../utils";
+import { sliceImagePack, random, shuffle } from "../../utils";
 import CorrectAnswerBar from "../correctAnswerBar/CorrectAnswerBar";
+import "./quiz.scss";
 
 class Quiz {
   type: "#artists" | "#paintings";
 
-  images: ImageType[];
+  imagePack: ImageType[];
 
   currentIndexOfQuiz: number;
 
   correctAnswerBar: CorrectAnswerBar;
 
+  activeImage: ImageType;
+
+  numberOfImagesInQuiz: number;
+
   constructor(type: "#artists" | "#paintings", index: number) {
     this.type = type;
-    this.images = getImages(index, index + 9, images);
+    this.numberOfImagesInQuiz = 1;
     this.currentIndexOfQuiz = 0;
+    this.imagePack = sliceImagePack(index, index + 9, images);
+    this.activeImage = this.imagePack[this.currentIndexOfQuiz];
     this.correctAnswerBar = new CorrectAnswerBar();
   }
 
   start() {
-    return Quiz.createQuizItem(this.type, this.images[this.currentIndexOfQuiz], images);
+    return Quiz.createQuizItem(this.type, this.activeImage, images);
   }
 
   addListener() {
@@ -28,29 +35,43 @@ class Quiz {
       const main = document.querySelector("main");
       const { target } = event;
       if (target && target instanceof HTMLElement && main) {
-        if (target.closest(".nextQButton")) {
+        if (target.closest(".result-middle__nav-next")) {
           this.currentIndexOfQuiz += 1;
-          if (this.currentIndexOfQuiz < this.images.length) {
-            main.innerHTML = Quiz.createQuizItem(this.type, this.images[this.currentIndexOfQuiz], images);
+          this.activeImage = this.imagePack[this.currentIndexOfQuiz];
+
+          if (this.currentIndexOfQuiz < this.numberOfImagesInQuiz) {
+            main.innerHTML = Quiz.createQuizItem(this.type, this.activeImage, images);
           } else {
-            main.innerHTML = Quiz.createFinalResult(this.correctAnswerBar.correct);
+            main.innerHTML = Quiz.createFinalResult(
+              this.correctAnswerBar.correct,
+              this.type,
+              this.numberOfImagesInQuiz,
+            );
           }
-        } else if (target.closest(".possibleAnswerElem")) {
-          if (this.type === "#artists") {
-            const answerElement = target.closest(".possibleAnswerElem");
-            if (this.images[this.currentIndexOfQuiz].author === answerElement?.textContent) {
-              this.correctAnswerBar.increaseCorrectValue();
-            }
-          } else {
-            const answer = (target as HTMLImageElement).src;
-            if (this.images[this.currentIndexOfQuiz].preview === answer) {
-              this.correctAnswerBar.increaseCorrectValue();
-            }
-          }
-          main.innerHTML = Quiz.createQuizMiddleResult(this.images[this.currentIndexOfQuiz]);
+        } else if (target.closest(".answers__item")) {
+          const isItCorrect = Quiz.checkIsItCorrect(this.type, target, this.activeImage);
+          this.correctAnswerBar.updateCorrectValue(isItCorrect);
+          main.innerHTML = Quiz.createQuizMiddleResult(this.activeImage, isItCorrect);
+        } else if (target.closest(".but-repeate")) {
+          this.currentIndexOfQuiz = 0;
+          this.correctAnswerBar.resetCorrectValue();
+          this.activeImage = this.imagePack[this.currentIndexOfQuiz];
+          main.innerHTML = Quiz.createQuizItem(this.type, this.activeImage, images);
         }
       }
     });
+  }
+
+  static checkIsItCorrect(type: "#artists" | "#paintings", target: HTMLElement, activeImage: ImageType) {
+    const answer = target.closest(".answers__item")?.querySelector(".answers__item_content");
+
+    if (
+      (answer && type === "#artists" && activeImage.author === answer.textContent) ||
+      (answer && type === "#paintings" && activeImage.preview === answer.getAttribute("src"))
+    ) {
+      return true;
+    }
+    return false;
   }
 
   static createQuizItem(type: "#artists" | "#paintings", image: ImageType, imageList: ImageType[]) {
@@ -71,22 +92,22 @@ class Quiz {
     return shuffle([
       image,
       ...randomNumbers.map((num) => {
-        return imageList[num];
+        return filteredImages[num];
       }),
     ]);
   }
 
   static createArtistsQuiz(image: ImageType, imageList: ImageType[]) {
     const { preview, name } = image;
-    return `<div class="questionCard">
+    return `<div class="quiz quiz-artists">
   <h2>Who is the author of the painting?</h2>
   <img
     src="${preview}" alt="${name}"
   />
-  <ul class="possibleAnswers">
+  <ul class="quiz__answers">
   ${imageList
     .map((elem) => {
-      return `<li class='possibleAnswerElem'>${elem.author}</li>`;
+      return `<li class='answers__item'><span class='answers__item_content'>${elem.author}</span></li>`;
     })
     .join(" ")}
     
@@ -96,73 +117,81 @@ class Quiz {
 
   static createPaintingQuiz(image: ImageType, imageList: ImageType[]) {
     const { author } = image;
-    return `<div class="questionCard questionCardPaintings">
+    return `<div class="quiz quiz-paintings">
   <h2>Which of these paintings did ${author} paint?</h2>
-  <ul class="possibleAnswers">
+  <ul class="quiz__answers">
   ${imageList
     .map((elem) => {
-      return `<li class='possibleAnswerElem'>
-      <img
-    src="${elem.preview}" alt="${`${elem.name}`}"
-  /></li>`;
+      return `<li class='answers__item'>
+      <img src="${elem.preview}" alt="${`${elem.name}`}" class='answers__item_content'/>
+    </li>`;
     })
     .join(" ")}
   </ul>
 </div>`;
   }
 
-  static createQuizMiddleResult(image: ImageType) {
+  static createQuizMiddleResult(image: ImageType, isItCorrect: boolean) {
     const { author, preview, full, name, year } = image;
-    return `<div class="tempDiv">
+    return `
+    <div class="quiz__result-middle">
   <a target="_blank" href="${full}">
-    <img
-      src="${preview}" alt="${`${author} - ${name}`}"
-    />
+    <img src="${preview}" alt="${`${author} - ${name}`}" />
   </a>
-  <div class="tempDivCont">
-    <button class="nextQButton">
-      <i class="bx bx-right-arrow-circle"></i>
-    </button>
+  <div class="result-middle__content">
     <h2>"${name}"</h2>
     <h3>${author}</h3>
     <span>${year}</span>
-    <span>
-      <i class="bx bx-x-circle"></i>
-      <i class="bx bx-check-circle"></i>
-    </span>
+  </div>
+  <div class="result-middle__nav">
+    <span class="result-middle__nav-result"> ${
+      isItCorrect
+        ? '<i class="bx bx-check-circle"></i> Correct answer!'
+        : '<i class="bx bx-x-circle"></i> Wrong answer!'
+    } </span>
+    <button class="result-middle__nav-next">
+      <i class="bx bx-right-arrow-circle"></i>
+    </button>
   </div>
 </div>`;
   }
 
-  static createEncouragingLine(rightAnswersNumber: number) {
-    if (rightAnswersNumber <= 3) {
+  static createEncouragingLine(resultNumber: number, maxNumber: number) {
+    const percentage = (maxNumber / resultNumber) * 100;
+    if (percentage <= 30) {
       return "Please try again. You can do better!";
     }
-    if (rightAnswersNumber > 3 && rightAnswersNumber <= 7) {
+    if (percentage > 30 && percentage <= 70) {
       return "Nice try. Can we repeat it?";
     }
-    if (rightAnswersNumber > 7 && rightAnswersNumber < 10) {
+    if (percentage > 70 && percentage < 100) {
       return "Almost done! One more time?";
     }
     return "Well done! You are now an art professor!";
   }
 
-  static createFinalResult(rightAnswersNumber: number) {
-    const encouragingLine = Quiz.createEncouragingLine(rightAnswersNumber);
+  static createFinalResult(resultNumber: number, type: "#artists" | "#paintings", maxNumber: number) {
+    const encouragingLine = Quiz.createEncouragingLine(resultNumber, maxNumber);
     return `
-<div class="totalCard">
-  <h3>Round completed!</h3>
+<div class="quiz__result-final">
+<div class="result-final__content" >
+<h3>Round completed!</h3>
   <p>${encouragingLine}</p>
-  <p>${rightAnswersNumber} correct answers out of 10</p>
-  <button class="back-home-button">
+  <p>${resultNumber} correct answers out of ${maxNumber}</p>
+</div>
+
+  
+  <div class="result-final__nav">
+<a class="back-home-button" href="/">
     <i class='bx bx-home-alt'></i>
-  </button>
+  </a>
   <button class="but-repeate">
-    <i class='bx bx-repeat'></i>
+    <i class='bx bx-sync'></i>
   </button>
-  <button class="back-cat">
+  <a class="back-cat" href="/${type}">
     <i class='bx bxs-widget'></i>
-  </button>
+  </a>
+  </div>
 </div>
   `;
   }

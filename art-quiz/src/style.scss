@@ -21,6 +21,19 @@ ins {
   text-decoration: none;
 }
 
+a,
+button,
+label {
+  color: black;
+  transition: 0.5s;
+  &:hover {
+    color: gold;
+  }
+  &:active {
+    color: rgb(84, 99, 172);
+  }
+}
+
 button {
   cursor: pointer;
   border: none;
@@ -36,10 +49,6 @@ button {
 
 label {
   cursor: pointer;
-}
-
-.displayNone {
-  display: none;
 }
 
 body {
@@ -84,87 +93,22 @@ body {
     font-size: 1rem;
   }
 
-  .but-repeate {
-    width: 32px;
-    height: 32px;
-    opacity: 0.7;
-    transition: 0.5s;
-
-    img {
-      width: 100%;
-      height: 100%;
-    }
-
-    &.displayNone {
-      display: none;
-    }
-
-    &:disabled {
-      opacity: 0.2;
-    }
-  }
-
-  .totalCard {
-    height: 100%;
-    width: 100%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    row-gap: 30px;
-
-    p {
-      font-size: 2rem;
-    }
-
-    button {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      bottom: 0;
-
-      &.back-home-button {
-        left: 0;
-      }
-
-      &.back-cat {
-        right: 0;
-      }
-
-      &.but-repeate {
-        left: calc(50% - 20px);
-      }
-    }
-  }
-
   main {
-    position: relative;
-    flex-grow: 1;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 10%;
-    overflow-y: auto;
-
-    &.main-not-centered {
-      align-items: unset;
-    }
-
+    flex-direction: column;
+    //align-items: center;
+    padding: 1rem;
+    flex-grow: 1;
     .quiz-type,
-    .cat-title,
     .detailedResult {
       width: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
       row-gap: 20px;
-
       position: relative;
       z-index: 99;
-
-      &.displayNone {
-        display: none;
-      }
 
       li {
         background-color: rgb(87, 87, 79);
@@ -173,7 +117,6 @@ body {
       }
     }
 
-    .cat-title,
     .detailedResult {
       flex-direction: row;
       flex-wrap: wrap;
@@ -191,118 +134,9 @@ body {
       }
     }
 
-    .cat {
-      width: 100%;
-      padding: 20px 0;
-      position: relative;
-
-      .indicators {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        column-gap: 5px;
-        justify-content: center;
-        position: absolute;
-        top: -15px;
-
-        &.displayNone {
-          display: none;
-        }
-
-        li {
-          width: 20px;
-          height: 20px;
-          background-color: rgba(219, 190, 190, 0.45);
-        }
-      }
-
-      .numTotal {
-        position: absolute;
-        right: 10px;
-        bottom: 20px;
-        padding: 10px;
-        width: 100%;
-        cursor: pointer;
-        background-color: rgba(255, 0, 0, 0.5);
-        text-align: right;
-        z-index: 999999999;
-      }
-
-      .questionCard {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        row-gap: 20px;
-        font-size: 1rem;
-        position: relative;
-
-        .timerBox {
-          position: absolute;
-          width: 30px;
-          font-size: 2rem;
-          top: -40px;
-          right: 10%;
-        }
-
-        & > img {
-          position: relative;
-          left: -500px;
-          opacity: 0;
-          transition: 0.5s;
-        }
-
-        &.displayNone {
-          display: none;
-        }
-
-        &.questionCardPaintings {
-          flex-direction: row;
-          flex-wrap: wrap;
-          justify-content: center;
-          column-gap: 20px;
-          row-gap: 20px;
-          align-content: center;
-
-          & > img {
-            cursor: pointer;
-            width: 45%;
-
-            margin: 0;
-          }
-        }
-
-        .possibleAnswers {
-          display: flex;
-          flex-direction: column;
-          row-gap: 20px;
-
-          &.displayNone {
-            display: none;
-          }
-
-          & > li {
-            padding: 10px;
-            background-color: #3636367a;
-            cursor: pointer;
-          }
-        }
-
-        & > img {
-          width: 100%;
-        }
-      }
-    }
-
     .detailedResult {
       position: absolute;
       font-size: 1rem;
-
-      .itemCloseButtomImg {
-        position: fixed;
-        bottom: 160px;
-        right: 20px;
-      }
 
       li {
         display: flex;
@@ -341,65 +175,6 @@ body {
         }
       }
     }
-
-    .tempDiv {
-      min-width: 300px;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      row-gap: 30px;
-      transition: 0.5s;
-
-      a {
-        width: 100%;
-
-        img {
-          width: 100%;
-          cursor: pointer;
-        }
-      }
-
-      .tempDivCont {
-        width: 100%;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        row-gap: 30px;
-
-        span {
-          font-size: 1rem;
-        }
-
-        .nextQButton,
-        .imgResult,
-        .but-total {
-          position: absolute;
-          width: 30px;
-          height: 30px;
-          bottom: -30px;
-          color: black;
-          opacity: 0.7;
-          transition: 0.3s;
-          border-radius: 50%;
-        }
-
-        .imgResult {
-          left: 30px;
-        }
-
-        .nextQButton,
-        .but-total {
-          right: 30px;
-
-          img {
-            width: 100%;
-          }
-        }
-      }
-    }
   }
 
   @media (min-width: 768px) {
@@ -421,63 +196,9 @@ body {
     }
 
     main {
-      padding: 5%;
-
-      .cat-title,
       .detailedResult {
-        .itemCloseButtomImg {
-          position: fixed;
-          bottom: 130px;
-          right: 30px;
-        }
-
         li {
           width: 200px;
-        }
-      }
-
-      .cat {
-        width: 100%;
-        padding: 0;
-
-        .indicators {
-          left: calc(50% - 122px);
-          top: 101%;
-        }
-
-        .questionCard {
-          height: 100%;
-          width: 75%;
-          margin: auto;
-          row-gap: 15px;
-
-          .timerBox {
-            width: 40px;
-            font-size: 2.5rem;
-            top: -30px;
-            right: -5%;
-          }
-
-          .possibleAnswers {
-            row-gap: 10px;
-
-            & > li {
-              padding: 8px;
-            }
-          }
-
-          & > img {
-            margin: auto;
-            width: 90%;
-          }
-        }
-      }
-
-      .tempDiv {
-        row-gap: 20px;
-
-        .tempDivCont {
-          row-gap: 15px;
         }
       }
     }
@@ -485,76 +206,12 @@ body {
 
   @media (min-width: 1024px) {
     main {
-      padding: 30px;
-
       .quiz-type {
         flex-direction: row;
         column-gap: 30px;
 
         li {
           flex-grow: 1;
-        }
-      }
-
-      .cat {
-        width: 100%;
-        padding: 0;
-
-        .indicators {
-          left: calc(50% - 122px);
-          top: 100%;
-        }
-
-        .questionCard {
-          flex-direction: row;
-          flex-wrap: wrap;
-          row-gap: 20px;
-          column-gap: 20px;
-
-          &.questionCardPaintings {
-            column-gap: 15px;
-            row-gap: 15px;
-
-            & > img {
-              width: 20%;
-            }
-          }
-
-          .possibleAnswers {
-            width: 30%;
-          }
-
-          & > img {
-            max-width: 400px;
-            max-height: 400px;
-            margin: 0 auto;
-          }
-        }
-      }
-
-      .tempDiv {
-        flex-direction: row;
-        row-gap: 20px;
-        column-gap: 20px;
-        align-items: center;
-        padding: 20px;
-
-        a {
-          width: 400px;
-          height: 400px;
-        }
-
-        .tempDivCont {
-          width: 30%;
-          row-gap: 20px;
-          height: 100%;
-          justify-content: flex-start;
-
-          .nextQButton,
-          .imgResult,
-          .but-total {
-            bottom: 20px;
-          }
         }
       }
     }
@@ -577,46 +234,11 @@ body {
     }
 
     main {
-      .cat-title,
       .detailedResult {
         column-gap: 30px;
         row-gap: 40px;
-
         li {
           width: 250px;
-        }
-      }
-
-      .cat {
-        padding: 0;
-
-        .indicators {
-          top: 98%;
-
-          li {
-            width: 30px;
-            height: 30px;
-            background-color: rgba(219, 190, 190, 0.45);
-          }
-        }
-
-        .questionCard {
-          font-size: 1.25rem;
-          justify-content: center;
-
-          & > img {
-            max-width: 600px;
-            max-height: 600px;
-          }
-        }
-      }
-
-      .tempDiv {
-        padding: 80px;
-
-        a {
-          width: 600px;
-          height: 600px;
         }
       }
     }

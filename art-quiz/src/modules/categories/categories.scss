@@ -1,0 +1,38 @@
+.categories {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+}
+
+.categories__item {
+  background-color: rgb(87, 87, 79);
+  width: 150px;
+
+  a {
+    color: white;
+    display: flex;
+    padding: 0.5rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .categories__item {
+    width: 200px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .categories {
+    gap: 2rem;
+    padding: 3rem;
+  }
+
+  .categories__item {
+    width: 250px;
+  }
+}

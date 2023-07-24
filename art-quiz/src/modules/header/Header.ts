@@ -9,12 +9,12 @@ class Header {
     return `<header>
         <h1>Art Quiz</h1>
         <nav class="nav-button">
-          <button class="back-home-button" disabled>
+          <a class="back-home-button" href="/">
             <i class='bx bx-home-alt'></i>
-          </button>
-          <button class="back-cat" disabled>
+          </a>
+          <a class="back-cat" href="/">
             <i class='bx bxs-widget'></i>
-          </button>
+          </a>
           <label class="but-settings-toggle" for="settings__toggle">
           <i class='bx bx-cog' ></i>
           </label>

@@ -14,12 +14,8 @@ function getAll() {
 
 import { ImageType } from "./interfaces";
 
-export function getImages(rangeStart: number, rangeEnd: number, images: ImageType[]) {
-  const imagesRange = <ImageType[]>[];
-  for (let i = rangeStart; i <= rangeEnd; i++) {
-    imagesRange.push(images[i]);
-  }
-  return imagesRange;
+export function sliceImagePack(rangeStart: number, rangeEnd: number, images: ImageType[]) {
+  return images.slice(rangeStart, rangeEnd + 1);
 }
 
 export function shuffle(arr: number[] | ImageType[]) {
