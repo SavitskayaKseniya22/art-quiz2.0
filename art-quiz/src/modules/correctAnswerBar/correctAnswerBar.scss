@@ -1,41 +1,27 @@
 .indicators {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  column-gap: 5px;
+  flex-direction: column;
+  gap: 5px;
   justify-content: center;
-  position: absolute;
-  top: -15px;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 999;
+  font-size: 2rem;
 
-  li {
-    width: 20px;
-    height: 20px;
-    background-color: rgba(219, 190, 190, 0.45);
+  .indicator__item {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 
 @media (min-width: 768px) {
   .indicators {
-    left: calc(50% - 122px);
-    top: 101%;
-  }
-}
-
-@media (min-width: 1024px) {
-  .indicators {
-    left: calc(50% - 122px);
-    top: 100%;
-  }
-}
-
-@media (min-width: 1920px) {
-  .indicators {
-    top: 98%;
-
-    li {
-      width: 30px;
-      height: 30px;
-      background-color: rgba(219, 190, 190, 0.45);
-    }
+    top: 2rem;
+    left: 2rem;
+    font-size: 2rem;
   }
 }

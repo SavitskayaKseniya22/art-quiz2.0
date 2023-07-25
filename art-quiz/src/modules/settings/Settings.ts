@@ -87,7 +87,7 @@ class Settings {
   <h2>Settings</h2>
   <ul class="settings__list">
     <li class="music-volume__range">
-      <h3>Volume of music</h3>
+      <h4>Volume of music</h4>
       <div class="settings__block-content">
         <button class="music-volume__off">
           <i class="bx bx-volume-mute"></i>
@@ -97,7 +97,7 @@ class Settings {
     </li>
     
     <li class="settings__effects-volume-range">
-      <h3>Volume of sound effects</h3>
+      <h4>Volume of sound effects</h4>
       <div class="settings__block-content">
         <button class="effects-volume__off">
           <i class="bx bx-volume-mute"></i>
@@ -108,7 +108,7 @@ class Settings {
     
 
     <li class="settings__timer" disabled=${!this.timerDisabled}>
-      <h3>Time to answer</h3>
+      <h4>Time to answer</h4>
       <div class="settings__block-content">
         <button class="settings__timer_update" data-modifier="decrease">
           <i class="bx bx-minus"></i>
@@ -121,7 +121,7 @@ class Settings {
     </li>
 
     <li class="settings__timer-toggle">
-      <h3>Timer</h3>
+      <h4>Timer</h4>
       <div class="settings__block-content">
         <input type="checkbox" id="settings__toggle-timer" ${this.timerDisabled ? "checked" : ""} />
         <label for="settings__toggle-timer" name="off">Off</label>
@@ -129,7 +129,7 @@ class Settings {
       </div>
     </li>
     <li class="settings__language">
-      <h3>Language</h3>
+      <h4>Language</h4>
       <div class="settings__block-content">
         <input type="radio" id="settings__language_ru" name="settings__language" value="ru" />
         <label for="settings__language_ru">ru</label>

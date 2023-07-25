@@ -15,14 +15,16 @@
 
   .quiz__answers {
     display: flex;
+    flex-grow: 2;
     gap: 1rem;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
   }
 
   .answers__item {
     padding: 0.5rem;
-    background-color: #3636367a;
+    background-color: #3636364d;
     cursor: pointer;
   }
 }
@@ -93,7 +95,6 @@
       flex-direction: row;
     }
     &.quiz-artists {
-      align-items: center;
       img {
         max-width: 80%;
       }
@@ -119,6 +120,10 @@
     padding: 2rem;
     position: relative;
 
+    img {
+      width: 30%;
+    }
+
     .result-middle__content {
       gap: 1.5rem;
       flex-grow: 0;
@@ -143,11 +148,7 @@
     &.quiz-artists {
       flex-direction: row;
       flex-wrap: wrap;
-
-      h2 {
-        display: block;
-        width: 100%;
-      }
+      align-items: center;
 
       img {
         max-width: 30%;

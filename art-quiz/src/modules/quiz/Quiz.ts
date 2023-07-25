@@ -19,7 +19,7 @@ class Quiz {
 
   constructor(type: "#artists" | "#paintings", index: number) {
     this.type = type;
-    this.numberOfImagesInQuiz = 1;
+    this.numberOfImagesInQuiz = 5;
     this.currentIndexOfQuiz = 0;
     this.imagePack = sliceImagePack(index, index + 9, images);
     this.activeImage = this.imagePack[this.currentIndexOfQuiz];
@@ -27,6 +27,11 @@ class Quiz {
   }
 
   start() {
+    const body = document.querySelector("body");
+    if (body) {
+      body.insertAdjacentHTML("afterbegin", CorrectAnswerBar.content());
+    }
+
     return Quiz.createQuizItem(this.type, this.activeImage, images);
   }
 
@@ -51,10 +56,12 @@ class Quiz {
         } else if (target.closest(".answers__item")) {
           const isItCorrect = Quiz.checkIsItCorrect(this.type, target, this.activeImage);
           this.correctAnswerBar.updateCorrectValue(isItCorrect);
+          CorrectAnswerBar.fillBarItem(this.currentIndexOfQuiz, isItCorrect);
           main.innerHTML = Quiz.createQuizMiddleResult(this.activeImage, isItCorrect);
         } else if (target.closest(".result-final__repeate")) {
           this.currentIndexOfQuiz = 0;
           this.correctAnswerBar.resetCorrectValue();
+          CorrectAnswerBar.resetBarItem();
           this.activeImage = this.imagePack[this.currentIndexOfQuiz];
           main.innerHTML = Quiz.createQuizItem(this.type, this.activeImage, images);
         }
@@ -100,7 +107,6 @@ class Quiz {
   static createArtistsQuiz(image: ImageType, imageList: ImageType[]) {
     const { preview, name } = image;
     return `<div class="quiz quiz-artists">
-  <h2>Who is the author of the painting?</h2>
   <img
     src="${preview}" alt="${name}"
   />
@@ -118,7 +124,7 @@ class Quiz {
   static createPaintingQuiz(image: ImageType, imageList: ImageType[]) {
     const { author } = image;
     return `<div class="quiz quiz-paintings">
-  <h2>Which of these paintings did ${author} paint?</h2>
+  <h2>${author}</h2>
   <ul class="quiz__answers">
   ${imageList
     .map((elem) => {
@@ -135,22 +141,20 @@ class Quiz {
     const { author, preview, full, name, year } = image;
     return `
     <div class="quiz__result-middle">
-    
-  <a target="_blank" href="${full}">
     <img src="${preview}" alt="${`${author} - ${name}`}" />
-  </a>
   <div class="result-middle__content">
     <h2>"${name}"</h2>
     <h3>${author}</h3>
     <span>${year}</span>
+    <a href="${full}" title="Go to see full image"><i class='bx bx-link-external'></i></a>
   </div>
   <div class="result-middle__nav">
     <span class="result-middle__nav-result"> ${
       isItCorrect
-        ? '<i class="bx bx-check-circle nav__result-correct"></i> Correct answer!'
-        : '<i class="bx bx-x-circle nav__result-wrong"></i> Wrong answer!'
+        ? '<i class="bx bx-check-circle indicator-correct"></i> Correct answer!'
+        : '<i class="bx bx-x-circle indicator-wrong"></i> Wrong answer!'
     } </span>
-    <button class="result-middle__nav-next">
+    <button class="result-middle__nav-next" title="Next quiz">
       <i class="bx bx-right-arrow-circle"></i>
     </button>
   </div>

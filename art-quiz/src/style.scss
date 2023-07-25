@@ -51,6 +51,15 @@ label {
   cursor: pointer;
 }
 
+i {
+  &.indicator-correct {
+    color: rgba(139, 195, 60, 1);
+  }
+  &.indicator-wrong {
+    color: rgba(235, 12, 140, 1);
+  }
+}
+
 body {
   color: white;
   font-family: "Neucha", cursive;
@@ -108,12 +117,12 @@ body {
       gap: 20px;
 
       li {
-        background-color: rgb(87, 87, 79);
+        background-color: #3636364d;
         background-image: url("./images/bottomStripes.png");
         background-repeat: repeat-x;
         max-width: 300px;
         min-width: 250px;
-
+        padding: 0.5rem;
         a {
           color: white;
         }
@@ -143,6 +152,7 @@ body {
 
         li {
           flex-grow: 1;
+          padding: 1rem;
         }
       }
     }

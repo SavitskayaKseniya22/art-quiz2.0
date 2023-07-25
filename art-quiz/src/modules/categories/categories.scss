@@ -5,10 +5,12 @@
   justify-content: center;
   gap: 1rem;
   padding: 2rem;
+  max-width: 1360px;
+  margin: 0 auto;
 }
 
 .categories__item {
-  background-color: #3636367a;
+  background-color: rgba(54, 54, 54, 0.3);
   width: 150px;
   background-image: url("../../images/bottomStripes.png");
   background-repeat: repeat-x;
@@ -20,11 +22,17 @@
     flex-direction: column;
     gap: 0.5rem;
   }
+  img {
+    display: none;
+  }
 }
 
 @media (min-width: 768px) {
   .categories__item {
     width: 200px;
+    img {
+      display: block;
+    }
   }
 }
 
@@ -32,6 +40,7 @@
   .categories {
     gap: 2rem;
     padding: 3rem;
+    max-width: 1920px;
   }
 
   .categories__item {
