@@ -17,13 +17,25 @@ class Quiz {
 
   numberOfImagesInQuiz: number;
 
+  index: number;
+
+  result: { [x: string]: { [x: number]: { [x: number]: boolean } } };
+
   constructor(type: "#artists" | "#paintings", index: number) {
     this.type = type;
-    this.numberOfImagesInQuiz = 5;
+    this.index = index;
+    this.numberOfImagesInQuiz = 3;
     this.currentIndexOfQuiz = 0;
     this.imagePack = sliceImagePack(index, index + 9, images);
     this.activeImage = this.imagePack[this.currentIndexOfQuiz];
     this.correctAnswerBar = new CorrectAnswerBar();
+    this.result = {
+      [this.type]: {
+        [this.index]: {
+          [this.currentIndexOfQuiz]: true,
+        },
+      },
+    };
   }
 
   start() {
@@ -33,6 +45,22 @@ class Quiz {
     }
 
     return Quiz.createQuizItem(this.type, this.activeImage, images);
+  }
+
+  updateResult(isItCorrect: boolean) {
+    this.result[this.type][this.index][this.currentIndexOfQuiz] = isItCorrect;
+  }
+
+  saveResult() {
+    const quizResult = window.localStorage.getItem("quiz-result");
+    if (quizResult) {
+      const parsedResult = JSON.parse(quizResult);
+      const commonResultForType = Object.assign(parsedResult[this.type], this.result[this.type]);
+      parsedResult[this.type] = commonResultForType;
+      window.localStorage.setItem("quiz-result", JSON.stringify(parsedResult));
+      return;
+    }
+    window.localStorage.setItem("quiz-result", JSON.stringify(this.result));
   }
 
   addListener() {
@@ -47,6 +75,7 @@ class Quiz {
           if (this.currentIndexOfQuiz < this.numberOfImagesInQuiz) {
             main.innerHTML = Quiz.createQuizItem(this.type, this.activeImage, images);
           } else {
+            this.saveResult();
             main.innerHTML = Quiz.createFinalResult(
               this.correctAnswerBar.correct,
               this.type,
@@ -56,6 +85,8 @@ class Quiz {
         } else if (target.closest(".answers__item")) {
           const isItCorrect = Quiz.checkIsItCorrect(this.type, target, this.activeImage);
           this.correctAnswerBar.updateCorrectValue(isItCorrect);
+          this.updateResult(isItCorrect);
+
           CorrectAnswerBar.fillBarItem(this.currentIndexOfQuiz, isItCorrect);
           main.innerHTML = Quiz.createQuizMiddleResult(this.activeImage, isItCorrect);
         } else if (target.closest(".result-final__repeate")) {

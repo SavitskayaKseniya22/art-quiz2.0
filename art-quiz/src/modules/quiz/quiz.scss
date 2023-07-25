@@ -26,6 +26,7 @@
     padding: 0.5rem;
     background-color: #3636364d;
     cursor: pointer;
+    width: 100%;
   }
 }
 
@@ -96,7 +97,10 @@
     }
     &.quiz-artists {
       img {
-        max-width: 80%;
+        max-width: 100%;
+      }
+      .quiz__answers {
+        width: 100%;
       }
     }
 

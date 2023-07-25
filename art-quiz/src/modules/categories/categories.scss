@@ -9,18 +9,33 @@
   margin: 0 auto;
 }
 
+.detailed-result__preview {
+  display: block;
+  width: 60px;
+  height: 20px;
+  position: absolute;
+  bottom: 2rem;
+  right: -1rem;
+  background-color: rgb(84, 99, 172);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+}
+
 .categories__item {
   background-color: rgba(54, 54, 54, 0.3);
   width: 150px;
   background-image: url("../../images/bottomStripes.png");
   background-repeat: repeat-x;
+  position: relative;
+  display: flex;
+  padding: 1rem 0.5rem 0.5rem 0.5rem;
+  flex-direction: column;
+  gap: 0.5rem;
 
   a {
     color: white;
-    display: flex;
-    padding: 1rem 0.5rem 0.5rem 0.5rem;
-    flex-direction: column;
-    gap: 0.5rem;
   }
   img {
     display: none;
@@ -28,10 +43,18 @@
 }
 
 @media (min-width: 768px) {
+  .detailed-result__preview {
+    width: 120px;
+    height: 40px;
+    bottom: 1rem;
+    right: -1rem;
+    font-size: 1.5rem;
+  }
   .categories__item {
     width: 200px;
     img {
       display: block;
+      width: 100%;
     }
   }
 }
