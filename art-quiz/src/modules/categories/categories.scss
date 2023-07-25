@@ -8,13 +8,15 @@
 }
 
 .categories__item {
-  background-color: rgb(87, 87, 79);
+  background-color: #3636367a;
   width: 150px;
+  background-image: url("../../images/bottomStripes.png");
+  background-repeat: repeat-x;
 
   a {
     color: white;
     display: flex;
-    padding: 0.5rem;
+    padding: 1rem 0.5rem 0.5rem 0.5rem;
     flex-direction: column;
     gap: 0.5rem;
   }

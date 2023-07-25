@@ -1,26 +1,25 @@
 footer {
-  padding: 1rem;
-  background-color: #3636367a;
-  background-image: url("../../images/bottomStripes.png");
-  background-repeat: repeat-x;
+  padding: 1rem 0.5rem 0.5rem 0.5rem;
   display: flex;
-  flex-direction: column;
-  row-gap: 0.5rem;
-
-  a {
-    color: white;
-    font-size: 16px;
-  }
-}
-
-@media (min-width: 768px) {
-  footer {
-    flex-direction: row;
-    justify-content: space-between;
-    font-size: 1.5rem;
-    align-items: center;
-    a {
-      font-size: 20px;
-    }
-  }
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 1) 20%,
+    rgba(7, 175, 218, 1) 20%,
+    rgba(7, 175, 218, 1) 32%,
+    rgba(139, 195, 60, 1) 32%,
+    rgba(139, 195, 60, 1) 44%,
+    rgba(84, 99, 172, 1) 44%,
+    rgba(84, 99, 172, 1) 56%,
+    rgba(235, 12, 140, 1) 56%,
+    rgba(235, 12, 140, 1) 68%,
+    rgba(246, 143, 29, 1) 68%,
+    rgba(246, 143, 29, 1) 80%,
+    rgba(255, 255, 255, 1) 80%,
+    rgba(255, 255, 255, 1) 100%
+  );
 }

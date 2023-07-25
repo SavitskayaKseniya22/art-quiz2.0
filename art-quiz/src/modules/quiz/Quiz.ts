@@ -52,7 +52,7 @@ class Quiz {
           const isItCorrect = Quiz.checkIsItCorrect(this.type, target, this.activeImage);
           this.correctAnswerBar.updateCorrectValue(isItCorrect);
           main.innerHTML = Quiz.createQuizMiddleResult(this.activeImage, isItCorrect);
-        } else if (target.closest(".but-repeate")) {
+        } else if (target.closest(".result-final__repeate")) {
           this.currentIndexOfQuiz = 0;
           this.correctAnswerBar.resetCorrectValue();
           this.activeImage = this.imagePack[this.currentIndexOfQuiz];
@@ -135,6 +135,7 @@ class Quiz {
     const { author, preview, full, name, year } = image;
     return `
     <div class="quiz__result-middle">
+    
   <a target="_blank" href="${full}">
     <img src="${preview}" alt="${`${author} - ${name}`}" />
   </a>
@@ -146,8 +147,8 @@ class Quiz {
   <div class="result-middle__nav">
     <span class="result-middle__nav-result"> ${
       isItCorrect
-        ? '<i class="bx bx-check-circle"></i> Correct answer!'
-        : '<i class="bx bx-x-circle"></i> Wrong answer!'
+        ? '<i class="bx bx-check-circle nav__result-correct"></i> Correct answer!'
+        : '<i class="bx bx-x-circle nav__result-wrong"></i> Wrong answer!'
     } </span>
     <button class="result-middle__nav-next">
       <i class="bx bx-right-arrow-circle"></i>
@@ -174,24 +175,12 @@ class Quiz {
     const encouragingLine = Quiz.createEncouragingLine(resultNumber, maxNumber);
     return `
 <div class="quiz__result-final">
-<div class="result-final__content" >
-<h3>Round completed!</h3>
+  <h3>Round completed!</h3>
   <p>${encouragingLine}</p>
   <p>${resultNumber} correct answers out of ${maxNumber}</p>
-</div>
-
-  
-  <div class="result-final__nav">
-<a class="back-home-button" href="/">
-    <i class='bx bx-home-alt'></i>
-  </a>
-  <button class="but-repeate">
+<button class="result-final__repeate">
     <i class='bx bx-sync'></i>
-  </button>
-  <a class="back-cat" href="/${type}">
-    <i class='bx bxs-widget'></i>
-  </a>
-  </div>
+</button>
 </div>
   `;
   }

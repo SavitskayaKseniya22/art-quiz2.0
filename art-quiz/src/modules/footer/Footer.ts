@@ -1,21 +1,12 @@
 import "./footer.scss";
 
 class Footer {
-  constructor() {
-    console.log(this);
-  }
-
   static content() {
     return `<footer>
-          <div class="nameCourse">
-            <a href="https://rs.school/js/" target="_blank"
-              ><img src="./images/rs_school_js.svg" alt="link" width="100"
-            /></a>
-          </div>
-          <div>
-            <a href="https://github.com/SavitskayaKseniya22" target="_blank">KSENIYA SAVITSKAYA</a>
-          </div>
-          <div>© 2023</div>
+            <a href="https://github.com/SavitskayaKseniya22" target="_blank">
+            <image src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="github" width="30" />
+            </a>
+          <span>2023</span>
       </footer>`;
   }
 }
