@@ -39,7 +39,7 @@ class Header {
           <button class="nav__cat"  title="Back to category page" data-disabled="true">
             <i class='bx bxs-widget'></i>
           </button>
-          <label class="nav__settings" for="settings__toggle">
+          <label class="nav__settings" for="settings__toggle" title="Settings">
           <i class='bx bx-cog' ></i>
           </label>
         </nav>

@@ -28,12 +28,22 @@ export const routes: {
     title: "Artists Quiz",
     description: "This is the page for quiz in the category 'Paintings'",
   },
+  "artists-quiz-result": {
+    title: "Artists Quiz last result",
+    description: "This is the page for the last result in the category 'Paintings'",
+  },
+  "paintings-quiz-result": {
+    title: "Paintings Quiz last result",
+    description: "This is the page for the last result in the category 'Paintings'",
+  },
 };
 
 export const locationHandler = async (location: string) => {
   const route =
     (/^paintings\/[0-9]+$/.test(location) && routes["painting-quiz"]) ||
     (/^artists\/[0-9]+$/.test(location) && routes["artists-quiz"]) ||
+    (/^paintings\/[0-9]+\/last-result$/.test(location) && routes["painting-quiz-result"]) ||
+    (/^artists\/[0-9]+\/last-result$/.test(location) && routes["artists-quiz-result"]) ||
     (location.length === 0 && routes["/"]) ||
     routes[location] ||
     routes["404"];

@@ -1,4 +1,4 @@
-.categories {
+.results {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -9,19 +9,9 @@
   margin: 0 auto;
 }
 
-.categories__item_result {
-  display: block;
-  background-color: rgb(84, 99, 172);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1rem;
-  padding: 0.5rem;
-}
-
-.categories__item {
+.results__item {
   background-color: rgba(54, 54, 54, 0.3);
-  width: 150px;
+  width: 250px;
   background-image: url("../../images/bottomStripes.png");
   background-repeat: repeat-x;
   position: relative;
@@ -30,24 +20,28 @@
   flex-direction: column;
   gap: 0.5rem;
 
-  a {
+  .results__item_link-to-full {
     color: white;
+    display: block;
+    position: absolute;
+    top: 2rem;
+    right: 1rem;
+    font-size: 2rem;
   }
-  img {
-    display: none;
+
+  .results__item_img-wrong {
+    filter: grayscale(100%);
+  }
+}
+
+@media (min-width: 420px) {
+  .results__item {
+    width: 150px;
   }
 }
 
 @media (min-width: 768px) {
-  .categories__item_result {
-    width: 120px;
-    height: 40px;
-    bottom: 1rem;
-    right: -1rem;
-    font-size: 1.5rem;
-    position: absolute;
-  }
-  .categories__item {
+  .results__item {
     width: 200px;
     img {
       display: block;
@@ -57,13 +51,13 @@
 }
 
 @media (min-width: 1920px) {
-  .categories {
+  .results {
     gap: 2rem;
     padding: 3rem;
-    max-width: 1920px;
+    max-width: 1500px;
   }
 
-  .categories__item {
+  .results__item {
     width: 250px;
   }
 }

@@ -34,10 +34,12 @@ class Categories {
     const numberOfCorrectAnswer = Categories.checkNumberOfCorrectAnswer(startIndex);
 
     return `<li data-index="${`${startIndex}`}" data-type="${type}" class="categories__item">
-    <a class="categories__item_to-start" href="#${type}/${index}"><h3>Round ${index + 1}</h3></a>
+    <a class="categories__item_to-start" href="#${type}/${index}" title="Start Round ${index + 1}"><h3>Round ${
+      index + 1
+    }</h3></a>
     ${
       typeof numberOfCorrectAnswer === "number"
-        ? `<a class="detailed-result__preview" href="${type}/${index}/result">${numberOfCorrectAnswer}/10</a>`
+        ? `<a class="categories__item_result" href="#${type}/${index}/last-result" title="See result">${numberOfCorrectAnswer}/10</a>`
         : ""
     }
       <img
