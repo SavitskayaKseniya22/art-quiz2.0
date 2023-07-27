@@ -1568,7 +1568,7 @@ const images = [
     full: "https://raw.githubusercontent.com/irinainina/image-data/dadea6e2555841b3f136d8ab07ce6474391f1a3f/full/195full.jpg",
   },
   {
-    author: "Эдуар Мане",
+    author: "Эдуард Мане",
     name: "Бар в «Фоли-Бержер»",
     year: "1882",
     preview:

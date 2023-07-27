@@ -1,4 +1,4 @@
-header {
+.header-main {
   padding: 0.5rem;
   position: relative;
   background: linear-gradient(
@@ -19,7 +19,7 @@ header {
     rgba(255, 255, 255, 1) 100%
   );
 
-  nav {
+  .nav {
     width: 5rem;
     height: 250px;
     display: flex;
@@ -36,16 +36,17 @@ header {
     background-position: top right;
     z-index: 99999;
 
-    .but-settings-toggle,
-    .back-home-button,
-    .back-cat {
+    .nav__settings,
+    .nav__home,
+    .nav__cat {
       width: 2.5rem;
       height: 2.5rem;
       opacity: 0.7;
       font-size: 2rem;
 
-      &:disabled {
+      &[data-disabled] {
         opacity: 0.2;
+        pointer-events: none;
       }
     }
   }

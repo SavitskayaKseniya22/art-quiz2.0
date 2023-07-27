@@ -1,21 +1,45 @@
+import { checkTypeOfQuiz } from "../../utils";
 import "./header.scss";
 
 class Header {
-  constructor() {
-    console.log(this);
+  static addListener() {
+    document.addEventListener("click", (event) => {
+      const { target } = event;
+      if (target && target instanceof HTMLElement) {
+        if (target.closest(".nav__cat")) {
+          const type = checkTypeOfQuiz();
+          if (type) {
+            window.location.href = `/#${type}`;
+          }
+        }
+      }
+    });
+  }
+
+  static toggleNavDisability(location: string) {
+    if (location === "") {
+      document.querySelector(".nav__home")?.setAttribute("data-disabled", "disabled");
+      document.querySelector(".nav__cat")?.setAttribute("data-disabled", "disabled");
+    } else if (location === "paintings" || location === "artists") {
+      document.querySelector(".nav__home")?.removeAttribute("data-disabled");
+      document.querySelector(".nav__cat")?.setAttribute("data-disabled", "disabled");
+    } else {
+      document.querySelector(".nav__home")?.removeAttribute("data-disabled");
+      document.querySelector(".nav__cat")?.removeAttribute("data-disabled");
+    }
   }
 
   static content() {
-    return `<header>
+    return `<header class="header-main">
         <h1>Art Quiz</h1>
-        <nav class="nav-button">
-          <a class="back-home-button" href="/" title="Go to home page">
+        <nav class="nav">
+          <a class="nav__home" href="/#" title="Back to home page" data-disabled="true">
             <i class='bx bx-home-alt'></i>
           </a>
-          <a class="back-cat" href="/" title="Go to category">
+          <button class="nav__cat"  title="Back to category page" data-disabled="true">
             <i class='bx bxs-widget'></i>
-          </a>
-          <label class="but-settings-toggle" for="settings__toggle">
+          </button>
+          <label class="nav__settings" for="settings__toggle">
           <i class='bx bx-cog' ></i>
           </label>
         </nav>

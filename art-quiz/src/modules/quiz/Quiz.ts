@@ -1,17 +1,16 @@
+/* eslint-disable no-sequences */
 import { ImageType } from "../../interfaces";
 import images from "../../images";
-import { sliceImagePack, random, shuffle } from "../../utils";
-import CorrectAnswerBar from "../correctAnswerBar/CorrectAnswerBar";
+import { sliceImagePack, random, shuffle, checkTypeOfQuiz } from "../../utils";
+import ResultBar from "../resultBar/ResultBar";
 import "./quiz.scss";
 
 class Quiz {
-  type: "#artists" | "#paintings";
-
   imagePack: ImageType[];
 
   currentIndexOfQuiz: number;
 
-  correctAnswerBar: CorrectAnswerBar;
+  resultBar: ResultBar;
 
   activeImage: ImageType;
 
@@ -19,113 +18,88 @@ class Quiz {
 
   index: number;
 
-  result: { [x: string]: { [x: number]: { [x: number]: boolean } } };
-
-  constructor(type: "#artists" | "#paintings", index: number) {
-    this.type = type;
-    this.index = index;
+  constructor() {
+    this.index = 0;
     this.numberOfImagesInQuiz = 3;
     this.currentIndexOfQuiz = 0;
-    this.imagePack = sliceImagePack(index, index + 9, images);
+    this.resultBar = new ResultBar();
+    this.imagePack = sliceImagePack(1, this.numberOfImagesInQuiz, images);
     this.activeImage = this.imagePack[this.currentIndexOfQuiz];
-    this.correctAnswerBar = new CorrectAnswerBar();
-    this.result = {
-      [this.type]: {
-        [this.index]: {
-          [this.currentIndexOfQuiz]: true,
-        },
-      },
-    };
+    this.addListener();
   }
 
-  start() {
-    const body = document.querySelector("body");
-    if (body) {
-      body.insertAdjacentHTML("afterbegin", CorrectAnswerBar.content());
-    }
+  setQuiz(type: "artists" | "paintings", index: number) {
+    this.index = index;
+    this.imagePack = sliceImagePack(index, this.numberOfImagesInQuiz, images);
+    this.activeImage = this.imagePack[this.currentIndexOfQuiz];
 
-    return Quiz.createQuizItem(this.type, this.activeImage, images);
+    return Quiz.createQuizItem(type, this.activeImage, images);
   }
 
-  updateResult(isItCorrect: boolean) {
-    this.result[this.type][this.index][this.currentIndexOfQuiz] = isItCorrect;
-  }
-
-  saveResult() {
-    const quizResult = window.localStorage.getItem("quiz-result");
-    if (quizResult) {
-      const parsedResult = JSON.parse(quizResult);
-      const commonResultForType = Object.assign(parsedResult[this.type], this.result[this.type]);
-      parsedResult[this.type] = commonResultForType;
-      window.localStorage.setItem("quiz-result", JSON.stringify(parsedResult));
-      return;
-    }
-    window.localStorage.setItem("quiz-result", JSON.stringify(this.result));
+  resetQuiz() {
+    this.currentIndexOfQuiz = 0;
+    this.activeImage = this.imagePack[this.currentIndexOfQuiz];
+    this.resultBar.reset();
   }
 
   addListener() {
     document.addEventListener("click", (event) => {
       const main = document.querySelector("main");
       const { target } = event;
-      if (target && target instanceof HTMLElement && main) {
+      const type = checkTypeOfQuiz();
+      if (target && target instanceof HTMLElement && main && type) {
         if (target.closest(".result-middle__nav-next")) {
           this.currentIndexOfQuiz += 1;
-          this.activeImage = this.imagePack[this.currentIndexOfQuiz];
-
           if (this.currentIndexOfQuiz < this.numberOfImagesInQuiz) {
-            main.innerHTML = Quiz.createQuizItem(this.type, this.activeImage, images);
+            this.activeImage = this.imagePack[this.currentIndexOfQuiz];
+            main.innerHTML = Quiz.createQuizItem(type, this.activeImage, images);
           } else {
-            this.saveResult();
-            main.innerHTML = Quiz.createFinalResult(
-              this.correctAnswerBar.correct,
-              this.type,
-              this.numberOfImagesInQuiz,
-            );
+            ResultBar.saveResult(this.resultBar.result);
+            main.innerHTML = Quiz.createFinalResult(this.resultBar.correct, this.numberOfImagesInQuiz);
           }
         } else if (target.closest(".answers__item")) {
-          const isItCorrect = Quiz.checkIsItCorrect(this.type, target, this.activeImage);
-          this.correctAnswerBar.updateCorrectValue(isItCorrect);
-          this.updateResult(isItCorrect);
-
-          CorrectAnswerBar.fillBarItem(this.currentIndexOfQuiz, isItCorrect);
+          const isItCorrect = Quiz.checkIsItCorrect(type, target, this.activeImage);
+          this.resultBar.updateResult(isItCorrect, this.index);
           main.innerHTML = Quiz.createQuizMiddleResult(this.activeImage, isItCorrect);
         } else if (target.closest(".result-final__repeate")) {
-          this.currentIndexOfQuiz = 0;
-          this.correctAnswerBar.resetCorrectValue();
-          CorrectAnswerBar.resetBarItem();
-          this.activeImage = this.imagePack[this.currentIndexOfQuiz];
-          main.innerHTML = Quiz.createQuizItem(this.type, this.activeImage, images);
+          this.resetQuiz();
+          main.innerHTML = Quiz.createQuizItem(type, this.activeImage, images);
         }
       }
     });
   }
 
-  static checkIsItCorrect(type: "#artists" | "#paintings", target: HTMLElement, activeImage: ImageType) {
+  static checkIsItCorrect(type: "artists" | "paintings", target: HTMLElement, activeImage: ImageType) {
     const answer = target.closest(".answers__item")?.querySelector(".answers__item_content");
 
     if (
-      (answer && type === "#artists" && activeImage.author === answer.textContent) ||
-      (answer && type === "#paintings" && activeImage.preview === answer.getAttribute("src"))
+      (answer && type === "artists" && activeImage.author === answer.textContent) ||
+      (answer && type === "paintings" && activeImage.preview === answer.getAttribute("src"))
     ) {
       return true;
     }
     return false;
   }
 
-  static createQuizItem(type: "#artists" | "#paintings", image: ImageType, imageList: ImageType[]) {
-    const filteredImages = Quiz.createSetOfData(image, imageList);
-
-    if (type === "#artists") {
+  static createQuizItem(type: "artists" | "paintings", image: ImageType, imageList: ImageType[]) {
+    const filteredImages = Quiz.createSetOfData(type, image, imageList);
+    if (type === "artists") {
       return Quiz.createArtistsQuiz(image, filteredImages);
     }
-
     return Quiz.createPaintingQuiz(image, filteredImages);
   }
 
-  static createSetOfData(image: ImageType, imageList: ImageType[]) {
-    const filteredImages = imageList.filter((elem) => {
+  static createSetOfData(type: "artists" | "paintings", image: ImageType, imageList: ImageType[]) {
+    let filteredImages = imageList.filter((elem) => {
       return elem.author !== image.author;
     });
+    if (type === "artists") {
+      filteredImages = filteredImages.reduce(
+        (arr: ImageType[], el) => (shuffle(arr).find(({ author }) => el.author === author) || arr.push(el), arr),
+        [],
+      );
+    }
+
     const randomNumbers = random(filteredImages.length, 3);
     return shuffle([
       image,
@@ -206,7 +180,7 @@ class Quiz {
     return "Well done! You are now an art professor!";
   }
 
-  static createFinalResult(resultNumber: number, type: "#artists" | "#paintings", maxNumber: number) {
+  static createFinalResult(resultNumber: number, maxNumber: number) {
     const encouragingLine = Quiz.createEncouragingLine(resultNumber, maxNumber);
     return `
 <div class="quiz__result-final">

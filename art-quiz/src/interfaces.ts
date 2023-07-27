@@ -5,3 +5,11 @@ export interface ImageType {
   preview: string;
   full: string;
 }
+
+export interface QuizResultType {
+  [x: string]: QuizResultItemType;
+}
+
+export interface QuizResultItemType {
+  [x: number]: boolean[];
+}
