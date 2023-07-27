@@ -5,7 +5,14 @@
 [Deploy](https://art-quiz-2.netlify.app/)
 
 ### Screenshots: 
-![изображение](https://user-images.githubusercontent.com/77901301/174841842-9ebdf329-31a1-4315-8fc4-bcece92ddd5c.png) ![изображение](https://user-images.githubusercontent.com/77901301/174842252-fbef85e2-c636-42a1-a903-1741da28dce7.png)
+![изображение](https://github.com/SavitskayaKseniya22/art-quiz2.0/assets/77901301/0a16e690-f0ab-416a-aa71-c068f630d0d8)
+
+![изображение](https://github.com/SavitskayaKseniya22/art-quiz2.0/assets/77901301/c1527e2a-da3f-4f68-b515-07c9b2dab891)
+
+![изображение](https://github.com/SavitskayaKseniya22/art-quiz2.0/assets/77901301/6d45e80a-4cd1-46df-a1e6-8b2c409a535e)
+
+
+
 
 ### Technologies used: 
 + Javascript
