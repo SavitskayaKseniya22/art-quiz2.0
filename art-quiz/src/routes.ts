@@ -40,9 +40,9 @@ export const routes: {
 
 export const locationHandler = async (location: string) => {
   const route =
-    (/^paintings\/[0-9]+$/.test(location) && routes["painting-quiz"]) ||
+    (/^paintings\/[0-9]+$/.test(location) && routes["paintings-quiz"]) ||
     (/^artists\/[0-9]+$/.test(location) && routes["artists-quiz"]) ||
-    (/^paintings\/[0-9]+\/last-result$/.test(location) && routes["painting-quiz-result"]) ||
+    (/^paintings\/[0-9]+\/last-result$/.test(location) && routes["paintings-quiz-result"]) ||
     (/^artists\/[0-9]+\/last-result$/.test(location) && routes["artists-quiz-result"]) ||
     (location.length === 0 && routes["/"]) ||
     routes[location] ||
