@@ -57,6 +57,10 @@
       padding: 0.5rem;
       background-color: #57574f38;
       transition: 0.3s;
+      &[data-disabled] {
+        pointer-events: none;
+        opacity: 0.5;
+      }
     }
 
     .music-volume__range {
@@ -68,10 +72,6 @@
     }
     .settings__timer {
       grid-area: 3 / 1 / 4 / 2;
-      &[disabled="true"] {
-        pointer-events: none;
-        opacity: 0.5;
-      }
     }
     .settings__timer-toggle {
       grid-area: 3 / 2 / 4 / 3;

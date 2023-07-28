@@ -31,3 +31,7 @@ export function checkTypeOfQuiz() {
   const location = window.location.hash.replace("#", "");
   return (location.includes("paintings") && "paintings") || (location.includes("artists") && "artists") || undefined;
 }
+
+export function getStartedIndexForImageSlice(type: "paintings" | "artists", basicIndex: number) {
+  return type === "paintings" ? (basicIndex + 12) * 10 : basicIndex * 10;
+}

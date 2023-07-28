@@ -720,7 +720,7 @@ const images = [
     full: "https://raw.githubusercontent.com/irinainina/image-data/dadea6e2555841b3f136d8ab07ce6474391f1a3f/full/89full.jpg",
   },
   {
-    author: "Василий тропинин",
+    author: "Василий Tропинин",
     name: "Девушка с горшком роз",
     year: "1850",
     preview:

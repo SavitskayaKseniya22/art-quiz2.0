@@ -1,69 +1,81 @@
 /* eslint-disable no-sequences */
-import { ImageType } from "../../interfaces";
-import images from "../../images";
-import { sliceImagePack, random, shuffle, checkTypeOfQuiz } from "../../utils";
 import ResultBar from "../resultBar/ResultBar";
+import Timer from "../Timer";
+import { ImageType } from "../../interfaces";
+import { sliceImagePack, random, shuffle } from "../../utils";
+import images from "../../images";
 import "./quiz.scss";
 
 class Quiz {
-  imagePack: ImageType[];
+  static numberOfImagesInQuiz: number = 3;
 
-  currentIndexOfQuiz: number;
+  static imagePack: ImageType[] = [];
 
-  resultBar: ResultBar;
+  static currentIndexOfQuiz: number = 0;
 
-  activeImage: ImageType;
+  static activeImage: ImageType = {} as ImageType;
 
-  numberOfImagesInQuiz: number;
+  static index: number = 0;
 
-  index: number;
+  static intervalId: NodeJS.Timeout | undefined;
 
-  constructor() {
-    this.index = 0;
-    this.numberOfImagesInQuiz = 3;
-    this.currentIndexOfQuiz = 0;
-    this.resultBar = new ResultBar();
-    this.imagePack = sliceImagePack(1, this.numberOfImagesInQuiz, images);
-    this.activeImage = this.imagePack[this.currentIndexOfQuiz];
-    this.addListener();
+  static type: "artists" | "paintings" = "artists";
+
+  static setQuiz(type: "artists" | "paintings", index: number) {
+    Quiz.type = type;
+    Quiz.index = index;
+    Quiz.imagePack = sliceImagePack(index, Quiz.numberOfImagesInQuiz, images);
+    Quiz.resetQuiz();
+    const { timerValue, timerEnabled } = Timer.setTimer();
+    Quiz.intervalId = timerEnabled
+      ? setTimeout(() => {
+          const main = document.querySelector("main");
+          if (main) {
+            main.innerHTML = Quiz.setFinalResultScreen();
+          }
+        }, timerValue * 1000)
+      : undefined;
+
+    return Quiz.createQuizItem(type, Quiz.activeImage, images);
   }
 
-  setQuiz(type: "artists" | "paintings", index: number) {
-    this.index = index;
-    this.imagePack = sliceImagePack(index, this.numberOfImagesInQuiz, images);
-    this.activeImage = this.imagePack[this.currentIndexOfQuiz];
-
-    return Quiz.createQuizItem(type, this.activeImage, images);
+  static resetAllTimers() {
+    Timer.reset();
+    clearInterval(Quiz.intervalId);
   }
 
-  resetQuiz() {
-    this.currentIndexOfQuiz = 0;
-    this.activeImage = this.imagePack[this.currentIndexOfQuiz];
-    this.resultBar.reset();
+  static resetQuiz() {
+    Quiz.currentIndexOfQuiz = 0;
+    Quiz.activeImage = Quiz.imagePack[Quiz.currentIndexOfQuiz];
+    ResultBar.reset();
+    Quiz.resetAllTimers();
   }
 
-  addListener() {
+  static setFinalResultScreen() {
+    ResultBar.saveResult(Quiz.type);
+    Quiz.resetAllTimers();
+    return Quiz.createFinalResult(ResultBar.correct, Quiz.numberOfImagesInQuiz);
+  }
+
+  static addListener() {
     document.addEventListener("click", (event) => {
       const main = document.querySelector("main");
       const { target } = event;
-      const type = checkTypeOfQuiz();
-      if (target && target instanceof HTMLElement && main && type) {
+      if (target && target instanceof HTMLElement && main) {
         if (target.closest(".result-middle__nav-next")) {
-          this.currentIndexOfQuiz += 1;
-          if (this.currentIndexOfQuiz < this.numberOfImagesInQuiz) {
-            this.activeImage = this.imagePack[this.currentIndexOfQuiz];
-            main.innerHTML = Quiz.createQuizItem(type, this.activeImage, images);
+          Quiz.currentIndexOfQuiz += 1;
+          if (Quiz.currentIndexOfQuiz < Quiz.numberOfImagesInQuiz) {
+            Quiz.activeImage = Quiz.imagePack[Quiz.currentIndexOfQuiz];
+            main.innerHTML = Quiz.createQuizItem(Quiz.type, Quiz.activeImage, images);
           } else {
-            ResultBar.saveResult(this.resultBar.result);
-            main.innerHTML = Quiz.createFinalResult(this.resultBar.correct, this.numberOfImagesInQuiz);
+            main.innerHTML = Quiz.setFinalResultScreen();
           }
         } else if (target.closest(".answers__item")) {
-          const isItCorrect = Quiz.checkIsItCorrect(type, target, this.activeImage);
-          this.resultBar.updateResult(isItCorrect, this.index);
-          main.innerHTML = Quiz.createQuizMiddleResult(this.activeImage, isItCorrect);
+          const isItCorrect = Quiz.checkIsItCorrect(Quiz.type, target, Quiz.activeImage);
+          ResultBar.updateResult(isItCorrect, Quiz.index);
+          main.innerHTML = Quiz.createQuizMiddleResult(Quiz.activeImage, isItCorrect);
         } else if (target.closest(".result-final__repeate")) {
-          this.resetQuiz();
-          main.innerHTML = Quiz.createQuizItem(type, this.activeImage, images);
+          main.innerHTML = Quiz.setQuiz(Quiz.type, Quiz.index);
         }
       }
     });
@@ -167,7 +179,11 @@ class Quiz {
   }
 
   static createEncouragingLine(resultNumber: number, maxNumber: number) {
-    const percentage = (maxNumber / resultNumber) * 100;
+    if (resultNumber === 0) {
+      return "Please try again. You can do better!";
+    }
+    const percentage = (resultNumber / maxNumber) * 100;
+
     if (percentage <= 30) {
       return "Please try again. You can do better!";
     }

@@ -1,22 +1,21 @@
-import "./categories.scss";
-import { ImageType, QuizResultType } from "../../interfaces";
-import { checkTypeOfQuiz, sliceImagePack } from "../../utils";
-import images from "../../images";
 import ResultBar from "../resultBar/ResultBar";
+import Quiz from "../quiz/Quiz";
+import { ImageType, QuizResultType } from "../../interfaces";
+import { getStartedIndexForImageSlice, sliceImagePack } from "../../utils";
+import images from "../../images";
+import "./categories.scss";
 
 class Categories {
-  images: { artists: ImageType[]; paintings: ImageType[] };
+  static images: { artists: ImageType[]; paintings: ImageType[] } = {
+    artists: sliceImagePack(0, 12, images),
+    paintings: sliceImagePack(12, 12, images),
+  };
 
-  constructor() {
-    this.images = { artists: sliceImagePack(0, 12, images), paintings: sliceImagePack(12, 12, images) };
+  static setCategory(type: "artists" | "paintings") {
+    return Categories.createCategoryList(Categories.images[type]);
   }
 
-  setCategory(type: "artists" | "paintings") {
-    return Categories.createCategoryList(this.images[type]);
-  }
-
-  static checkNumberOfCorrectAnswer(index: number) {
-    const type = checkTypeOfQuiz();
+  static checkNumberOfCorrectAnswer(index: number, type: "artists" | "paintings") {
     const results: QuizResultType = ResultBar.readResults();
     if (results && type && results[type] && results[type][index]) {
       const values = Object.values(results[type][index]);
@@ -28,11 +27,10 @@ class Categories {
   }
 
   static createCategory(image: ImageType, index: number) {
-    const type = checkTypeOfQuiz();
+    const { type } = Quiz;
     const { author, preview, name } = image;
-    const startIndex = type === "artists" ? index * 10 : (index + 12) * 10;
-    const numberOfCorrectAnswer = Categories.checkNumberOfCorrectAnswer(startIndex);
-
+    const startIndex = getStartedIndexForImageSlice(type, index);
+    const numberOfCorrectAnswer = Categories.checkNumberOfCorrectAnswer(startIndex, type);
     return `<li data-index="${`${startIndex}`}" data-type="${type}" class="categories__item">
     <a class="categories__item_to-start" href="#${type}/${index}" title="Start Round ${index + 1}"><h3>Round ${
       index + 1

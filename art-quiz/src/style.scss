@@ -130,7 +130,37 @@ body {
     }
   }
 
+  .timer {
+    background-color: rgb(246, 143, 29);
+    position: fixed;
+    padding: 1rem;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    width: 120px;
+    gap: 0.5rem;
+    bottom: 4rem;
+    left: 0;
+    opacity: 0.9;
+    justify-content: flex-end;
+    &[data-disabled] {
+      display: none;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+    }
+  }
+
   @media (min-width: 768px) {
+    .timer {
+      font-size: 2rem;
+      width: 25%;
+      gap: 1rem;
+      bottom: 6rem;
+    }
+
     h1 {
       font-size: 3rem;
     }

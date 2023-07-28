@@ -1,16 +1,10 @@
 import { QuizResultItemType } from "../../interfaces";
-import { checkTypeOfQuiz } from "../../utils";
 import "./resultBar.scss";
 
 class ResultBar {
-  correct: number;
+  static correct: number = 0;
 
-  result: QuizResultItemType;
-
-  constructor() {
-    this.correct = 0;
-    this.result = {};
-  }
+  static result: QuizResultItemType = {} as QuizResultItemType;
 
   static fillBarItem(index: number, isItCorrect: boolean) {
     const indicator = document.querySelector(`[data-indicator="${index}"]`);
@@ -30,20 +24,20 @@ class ResultBar {
     });
   }
 
-  reset() {
-    this.result = {};
-    this.correct = 0;
+  static reset() {
+    ResultBar.result = {};
+    ResultBar.correct = 0;
     ResultBar.resetBarItem();
   }
 
-  updateResult(isItCorrect: boolean, indexOfPack: number) {
-    if (!this.result[indexOfPack]) {
-      this.result[indexOfPack] = [];
+  static updateResult(isItCorrect: boolean, indexOfPack: number) {
+    if (!ResultBar.result[indexOfPack]) {
+      ResultBar.result[indexOfPack] = [];
     }
-    this.result[indexOfPack].push(isItCorrect);
+    ResultBar.result[indexOfPack].push(isItCorrect);
 
-    ResultBar.fillBarItem(this.result[indexOfPack].length, isItCorrect);
-    this.correct = this.result[indexOfPack].filter((elem) => {
+    ResultBar.fillBarItem(ResultBar.result[indexOfPack].length, isItCorrect);
+    ResultBar.correct = ResultBar.result[indexOfPack].filter((elem) => {
       return elem === true;
     }).length;
   }
@@ -56,23 +50,22 @@ class ResultBar {
     return null;
   }
 
-  static saveResult(result: QuizResultItemType) {
-    const type = checkTypeOfQuiz();
+  static saveResult(type: "artists" | "paintings") {
     const quizResult = window.localStorage.getItem("quiz-result");
 
     if (type) {
       if (quizResult) {
         const parsedResult = JSON.parse(quizResult);
         if (parsedResult[type]) {
-          parsedResult[type] = Object.assign(parsedResult[type], result);
+          parsedResult[type] = Object.assign(parsedResult[type], ResultBar.result);
         } else {
-          parsedResult[type] = result;
+          parsedResult[type] = ResultBar.result;
         }
 
         window.localStorage.setItem("quiz-result", JSON.stringify(parsedResult));
         return;
       }
-      window.localStorage.setItem("quiz-result", JSON.stringify({ [type]: result }));
+      window.localStorage.setItem("quiz-result", JSON.stringify({ [type]: ResultBar.result }));
     }
   }
 

@@ -1,4 +1,4 @@
-import { checkTypeOfQuiz } from "../../utils";
+import Quiz from "../quiz/Quiz";
 import "./header.scss";
 
 class Header {
@@ -7,10 +7,8 @@ class Header {
       const { target } = event;
       if (target && target instanceof HTMLElement) {
         if (target.closest(".nav__cat")) {
-          const type = checkTypeOfQuiz();
-          if (type) {
-            window.location.href = `/#${type}`;
-          }
+          const { type } = Quiz;
+          window.location.href = `/#${type}`;
         }
       }
     });
