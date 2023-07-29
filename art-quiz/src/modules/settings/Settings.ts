@@ -1,25 +1,16 @@
 import i18next from "i18next";
+import AppStorage from "../Storage";
+import Music from "../Music";
 import "./settings.scss";
+import SoundEffects from "../SoundEffects";
 
-const MAX_TIMER_VALUE = 30;
-const MIN_TIMER_VALUE = 5;
+const MAX_TIMER_VALUE = 60;
+const MIN_TIMER_VALUE = 10;
 
 class Settings {
-  static timerValue: number = Number(Settings.readStorage("timerValue")) || 15;
+  static timerValue: number = Number(AppStorage.read("timerValue")) || 30;
 
-  static timerEnabled: boolean = Settings.readStorage("timerEnabled") || false;
-
-  static writeStorage(key: string, value: string | number | boolean) {
-    window.localStorage.setItem(key, JSON.stringify(value));
-  }
-
-  static readStorage(value: string) {
-    const item = window.localStorage.getItem(value);
-    if (item) {
-      return JSON.parse(item);
-    }
-    return null;
-  }
+  static timerEnabled: boolean = AppStorage.read("timerEnabled") || false;
 
   static addListener() {
     document.addEventListener("click", (event) => {
@@ -39,7 +30,7 @@ class Settings {
             const answerTimeContainer = document.querySelector(".settings__answer-time");
             if (answerTimeContainer) {
               answerTimeContainer.textContent = String(Settings.timerValue);
-              Settings.writeStorage("timerValue", Settings.timerValue);
+              AppStorage.write("timerValue", Settings.timerValue);
             }
           }
         }
@@ -50,13 +41,8 @@ class Settings {
       const { checked } = event.target as HTMLInputElement;
       const timerContainer = document.querySelector(".settings__timer");
       Settings.timerEnabled = checked;
-      if (Settings.timerEnabled) {
-        timerContainer?.removeAttribute("data-disabled");
-      } else {
-        timerContainer?.setAttribute("data-disabled", "disabled");
-      }
-
-      Settings.writeStorage("timerEnabled", Settings.timerEnabled);
+      timerContainer?.setAttribute("data-disabled", String(!Settings.timerEnabled));
+      AppStorage.write("timerEnabled", Settings.timerEnabled);
     });
 
     document.querySelectorAll("input[name='settings__language']")?.forEach((elem) => {
@@ -102,26 +88,8 @@ class Settings {
   </label>
   <h2>Settings</h2>
   <ul class="settings__list">
-    <li class="settings__music">
-      <h4>Volume of music</h4>
-      <div class="settings__block-content">
-        <button class="music__off">
-          <i class="bx bx-volume-mute"></i>
-        </button>
-        <input type="range" class="music__range" min="0" max="1" step="0.1" />
-      </div>
-    </li>
-    
-    <li class="settings__effects">
-      <h4>Volume of sound effects</h4>
-      <div class="settings__block-content">
-        <button class="effects__off">
-          <i class='bx bx-volume-full'></i>
-        </button>
-        <input type="range" class="effects__range" min="0" max="1" step="0.1" />
-      </div>
-    </li>
-    
+    ${Music.content()}
+    ${SoundEffects.content()}
     <li class="settings__timer" data-disabled=${!Settings.timerEnabled}>
       <h4>Time to answer</h4>
       <div class="settings__block-content">

@@ -57,23 +57,32 @@
       padding: 0.5rem;
       background-color: #57574f38;
       transition: 0.3s;
-      &[data-disabled] {
+      &[data-disabled="true"] {
         pointer-events: none;
         opacity: 0.5;
       }
     }
 
-    .effects__off[data-muted] {
+    [data-muted="true"] {
       opacity: 0.2;
     }
 
     .settings__music {
-      grid-area: 1 / 1 / 2 / 3;
+      grid-area: 1 / 1 / 2 / 2;
+    }
+
+    .settings__music-toggle {
+      grid-area: 1 / 2 / 2 / 3;
     }
 
     .settings__effects {
-      grid-area: 2 / 1 / 3 / 3;
+      grid-area: 2 / 1 / 3 / 2;
     }
+
+    .settings__effects-toggle {
+      grid-area: 2 / 2 / 3 / 3;
+    }
+
     .settings__timer {
       grid-area: 3 / 1 / 4 / 2;
     }

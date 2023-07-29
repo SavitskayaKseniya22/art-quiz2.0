@@ -1,5 +1,5 @@
-import ResultBar from "../resultBar/ResultBar";
 import Quiz from "../quiz/Quiz";
+import AppStorage from "../Storage";
 import { ImageType, QuizResultType } from "../../interfaces";
 import { getStartedIndexForImageSlice, sliceImagePack } from "../../utils";
 import images from "../../images";
@@ -16,7 +16,7 @@ class Categories {
   }
 
   static checkNumberOfCorrectAnswer(index: number, type: "artists" | "paintings") {
-    const results: QuizResultType = ResultBar.readResults();
+    const results: QuizResultType = AppStorage.read("quiz-result");
     if (results && type && results[type] && results[type][index]) {
       const values = Object.values(results[type][index]);
       return values.filter((elem) => {

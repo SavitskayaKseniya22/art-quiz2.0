@@ -7,6 +7,7 @@ import Quiz from "./modules/quiz/Quiz";
 import DetailedResults from "./modules/detailedResults/DetailedResults";
 import Timer from "./modules/Timer";
 import SoundEffects from "./modules/SoundEffects";
+import Music from "./modules/Music";
 import { locationHandler } from "./routes";
 import { QuizResultType } from "./interfaces";
 import { getStartedIndexForImageSlice, sliceImagePack } from "./utils";
@@ -15,6 +16,7 @@ import "boxicons";
 import "normalize.css";
 import "./style.scss";
 import "./i18n";
+import AppStorage from "./modules/Storage";
 
 class App {
   static addListener() {
@@ -22,6 +24,7 @@ class App {
     Settings.addListener();
     Quiz.addListener();
     SoundEffects.addListener();
+    Music.addListener();
 
     window.addEventListener("hashchange", (event) => {
       const main = document.querySelector("main");
@@ -60,7 +63,7 @@ class App {
             return;
           }
           const imagePack = sliceImagePack(startedIndexForImageSlice, 10, images);
-          const results: QuizResultType = ResultBar.readResults();
+          const results: QuizResultType = AppStorage.read("quiz-result");
           if (results && type && results[type] && results[type][startedIndexForImageSlice]) {
             main.innerHTML = DetailedResults.setDetailedResults(imagePack, results[type][startedIndexForImageSlice]);
           }
@@ -113,6 +116,7 @@ class App {
     if (body) {
       body.insertAdjacentHTML("afterbegin", App.content());
       body.insertAdjacentElement("beforeend", SoundEffects.audioElement);
+      body.insertAdjacentElement("beforeend", Music.audioElement);
     }
     App.addListener();
     return this;

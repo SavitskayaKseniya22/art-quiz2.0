@@ -18,3 +18,10 @@ export interface PlaylistItem {
   title: string;
   src: string;
 }
+
+export interface AudioProperties {
+  volume?: number;
+  loop?: string;
+  src?: string;
+  onended?: () => void;
+}

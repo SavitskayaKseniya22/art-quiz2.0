@@ -1,4 +1,5 @@
-import { QuizResultItemType } from "../../interfaces";
+import { QuizResultItemType, QuizResultType } from "../../interfaces";
+import AppStorage from "../Storage";
 import "./resultBar.scss";
 
 class ResultBar {
@@ -35,38 +36,24 @@ class ResultBar {
       ResultBar.result[indexOfPack] = [];
     }
     ResultBar.result[indexOfPack].push(isItCorrect);
-
     ResultBar.fillBarItem(ResultBar.result[indexOfPack].length, isItCorrect);
     ResultBar.correct = ResultBar.result[indexOfPack].filter((elem) => {
       return elem === true;
     }).length;
   }
 
-  static readResults() {
-    const quizResult = window.localStorage.getItem("quiz-result");
-    if (quizResult) {
-      return JSON.parse(quizResult);
-    }
-    return null;
-  }
-
   static saveResult(type: "artists" | "paintings") {
-    const quizResult = window.localStorage.getItem("quiz-result");
-
-    if (type) {
-      if (quizResult) {
-        const parsedResult = JSON.parse(quizResult);
-        if (parsedResult[type]) {
-          parsedResult[type] = Object.assign(parsedResult[type], ResultBar.result);
-        } else {
-          parsedResult[type] = ResultBar.result;
-        }
-
-        window.localStorage.setItem("quiz-result", JSON.stringify(parsedResult));
-        return;
+    const results: QuizResultType = AppStorage.read("quiz-result");
+    if (results) {
+      if (results[type]) {
+        results[type] = Object.assign(results[type], ResultBar.result);
+      } else {
+        results[type] = ResultBar.result;
       }
-      window.localStorage.setItem("quiz-result", JSON.stringify({ [type]: ResultBar.result }));
+      AppStorage.write("quiz-result", results);
+      return;
     }
+    AppStorage.write("quiz-result", { [type]: ResultBar.result });
   }
 
   static content() {

@@ -166,7 +166,9 @@ class Quiz {
     <h2>"${name}"</h2>
     <h3>${author}</h3>
     <span>${year}</span>
-    <a href="${full}" title="Go to see full image"><i class='bx bx-link-external'></i></a>
+    <a href="${full}" target="_blank" title="Go to see full image">
+    <i class='bx bx-link-external'></i>
+    </a>
   </div>
   <div class="result-middle__nav">
     <span class="result-middle__nav-result"> ${
