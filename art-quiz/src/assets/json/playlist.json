@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Sound effect for correct answer",
+    "src": "../../../assets/sounds/effect-correct.mp3"
+  },
+  {
+    "title": "Sound effect for wrong answer",
+    "src": "../../../assets/sounds/effect-wrong.mp3"
+  },
+  {
+    "title": "Sound effect for the end of quiz",
+    "src": "../../../assets/sounds/effect-end.mp3"
+  }
+]

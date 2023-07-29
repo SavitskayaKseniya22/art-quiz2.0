@@ -102,23 +102,23 @@ class Settings {
   </label>
   <h2>Settings</h2>
   <ul class="settings__list">
-    <li class="music-volume__range">
+    <li class="settings__music">
       <h4>Volume of music</h4>
       <div class="settings__block-content">
-        <button class="music-volume__off">
+        <button class="music__off">
           <i class="bx bx-volume-mute"></i>
         </button>
-        <input type="range" class="music-volume__range-input" min="0" max="1" step="0.1" />
+        <input type="range" class="music__range" min="0" max="1" step="0.1" />
       </div>
     </li>
     
-    <li class="settings__effects-volume-range">
+    <li class="settings__effects">
       <h4>Volume of sound effects</h4>
       <div class="settings__block-content">
-        <button class="effects-volume__off">
-          <i class="bx bx-volume-mute"></i>
+        <button class="effects__off">
+          <i class='bx bx-volume-full'></i>
         </button>
-        <input type="range" class="volumeSoundEffects" min="0" max="1" step="0.1" />
+        <input type="range" class="effects__range" min="0" max="1" step="0.1" />
       </div>
     </li>
     

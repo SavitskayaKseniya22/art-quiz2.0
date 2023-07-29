@@ -13,3 +13,8 @@ export interface QuizResultType {
 export interface QuizResultItemType {
   [x: number]: boolean[];
 }
+
+export interface PlaylistItem {
+  title: string;
+  src: string;
+}

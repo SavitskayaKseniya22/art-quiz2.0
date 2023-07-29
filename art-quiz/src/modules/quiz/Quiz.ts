@@ -1,6 +1,7 @@
 /* eslint-disable no-sequences */
 import ResultBar from "../resultBar/ResultBar";
 import Timer from "../Timer";
+import SoundEffects from "../SoundEffects";
 import { ImageType } from "../../interfaces";
 import { sliceImagePack, random, shuffle } from "../../utils";
 import images from "../../images";
@@ -54,6 +55,7 @@ class Quiz {
   static setFinalResultScreen() {
     ResultBar.saveResult(Quiz.type);
     Quiz.resetAllTimers();
+    SoundEffects.setSoundEffectSource();
     return Quiz.createFinalResult(ResultBar.correct, Quiz.numberOfImagesInQuiz);
   }
 
@@ -73,6 +75,7 @@ class Quiz {
         } else if (target.closest(".answers__item")) {
           const isItCorrect = Quiz.checkIsItCorrect(Quiz.type, target, Quiz.activeImage);
           ResultBar.updateResult(isItCorrect, Quiz.index);
+          SoundEffects.setSoundEffectSource(isItCorrect);
           main.innerHTML = Quiz.createQuizMiddleResult(Quiz.activeImage, isItCorrect);
         } else if (target.closest(".result-final__repeate")) {
           main.innerHTML = Quiz.setQuiz(Quiz.type, Quiz.index);

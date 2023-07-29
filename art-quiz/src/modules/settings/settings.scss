@@ -63,11 +63,15 @@
       }
     }
 
-    .music-volume__range {
+    .effects__off[data-muted] {
+      opacity: 0.2;
+    }
+
+    .settings__music {
       grid-area: 1 / 1 / 2 / 3;
     }
 
-    .settings__effects-volume-range {
+    .settings__effects {
       grid-area: 2 / 1 / 3 / 3;
     }
     .settings__timer {

@@ -6,6 +6,7 @@ import ResultBar from "./modules/resultBar/ResultBar";
 import Quiz from "./modules/quiz/Quiz";
 import DetailedResults from "./modules/detailedResults/DetailedResults";
 import Timer from "./modules/Timer";
+import SoundEffects from "./modules/SoundEffects";
 import { locationHandler } from "./routes";
 import { QuizResultType } from "./interfaces";
 import { getStartedIndexForImageSlice, sliceImagePack } from "./utils";
@@ -20,6 +21,7 @@ class App {
     Header.addListener();
     Settings.addListener();
     Quiz.addListener();
+    SoundEffects.addListener();
 
     window.addEventListener("hashchange", (event) => {
       const main = document.querySelector("main");
@@ -110,6 +112,7 @@ class App {
     const body = document.querySelector("body");
     if (body) {
       body.insertAdjacentHTML("afterbegin", App.content());
+      body.insertAdjacentElement("beforeend", SoundEffects.audioElement);
     }
     App.addListener();
     return this;
