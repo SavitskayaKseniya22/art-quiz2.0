@@ -73,7 +73,7 @@ class SoundEffects {
   static content() {
     return `
     <li class="settings__effects" data-disabled=${!SoundEffects.isEnabled}>
-      <h4>Volume of sound effects</h4>
+      <h4 data-i18n="settings.titles.effectsVol">Volume of sound effects</h4>
       <div class="settings__block-content">
         <button class="effects__off" ${`data-muted="${!SoundEffects.audioElement.volume}"`}>
           <i class='bx bx-volume-full'></i>
@@ -85,11 +85,11 @@ class SoundEffects {
     </li>
 
     <li class="settings__effects-toggle">
-      <h4>Sound effects</h4>
+      <h4 data-i18n="settings.titles.effects">Sound effects</h4>
       <div class="settings__block-content">
         <input type="checkbox" id="settings__effects-toggle" ${SoundEffects.isEnabled ? "checked" : ""} />
-        <label for="settings__effects-toggle" name="off">Off</label>
-        <label for="settings__effects-toggle" name="on">On</label>
+        <label for="settings__effects-toggle" name="off" data-i18n="settings.off">Off</label>
+        <label for="settings__effects-toggle" name="on" data-i18n="settings.on">On</label>
       </div>
     </li>
     `;

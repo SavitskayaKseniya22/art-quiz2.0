@@ -48,5 +48,23 @@
       },
       "repeate": "One more attempt"
     }
+  },
+  "settings": {
+    "on": "On",
+    "off": "Off",
+    "titles": {
+      "settings": "Settings",
+      "time": "Time to answer",
+      "timer": "Timer",
+      "language": "Language",
+      "musicVol": "Volume of music",
+      "music": "Music",
+      "effectsVol": "Volume of sound effects",
+      "effects": "Sound effects"
+    },
+    "lang": {
+      "ru": "Russian",
+      "en": "English"
+    }
   }
 }

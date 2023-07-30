@@ -86,12 +86,12 @@ class Settings {
   <label for="settings__toggle" class="settings__close-button">
   <i class='bx bx-x'></i>
   </label>
-  <h2>Settings</h2>
+  <h2 data-i18n="settings.titles.settings">Settings</h2>
   <ul class="settings__list">
     ${Music.content()}
     ${SoundEffects.content()}
     <li class="settings__timer" data-disabled=${!Settings.timerEnabled}>
-      <h4>Time to answer</h4>
+      <h4 data-i18n="settings.titles.time">Time to answer</h4>
       <div class="settings__block-content">
         <button class="settings__timer_update" data-modifier="decrease">
           <i class="bx bx-minus"></i>
@@ -104,20 +104,20 @@ class Settings {
     </li>
 
     <li class="settings__timer-toggle">
-      <h4>Timer</h4>
+      <h4 data-i18n="settings.titles.timer">Timer</h4>
       <div class="settings__block-content">
         <input type="checkbox" id="settings__toggle-timer" ${Settings.timerEnabled ? "checked" : ""} />
-        <label for="settings__toggle-timer" name="off">Off</label>
-        <label for="settings__toggle-timer" name="on">On</label>
+        <label for="settings__toggle-timer" name="off" data-i18n="settings.off">Off</label>
+        <label for="settings__toggle-timer" name="on" data-i18n="settings.on">On</label>
       </div>
     </li>
     <li class="settings__language">
-      <h4>Language</h4>
+      <h4 data-i18n="settings.titles.language">Language</h4>
       <div class="settings__block-content">
         <input type="radio" id="settings__language_ru" name="settings__language" value="ru" />
-        <label for="settings__language_ru">ru</label>
+        <label for="settings__language_ru" data-i18n="settings.lang.ru">Russian</label>
         <input type="radio" id="settings__language_en" name="settings__language" value="en" />
-        <label for="settings__language_en">en</label>
+        <label for="settings__language_en" data-i18n="settings.lang.en">English</label>
       </div>
     </li>
   </ul>

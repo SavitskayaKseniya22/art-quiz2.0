@@ -53,7 +53,7 @@ class Music {
 
   static content() {
     return `<li class="settings__music" data-disabled=${!Music.isEnabled}>
-      <h4>Volume of music</h4>
+      <h4 data-i18n="settings.titles.musicVol">Volume of music</h4>
       <div class="settings__block-content">
         <button class="music__off" ${`data-muted="${!Music.audioElement.volume}"`}>
           <i class='bx bx-volume-full'></i>
@@ -63,11 +63,11 @@ class Music {
       </div>
     </li>
     <li class="settings__music-toggle">
-      <h4>Music</h4>
+      <h4 data-i18n="settings.titles.music">Music</h4>
       <div class="settings__block-content">
         <input type="checkbox" id="settings__music-toggle" ${Music.isEnabled ? "checked" : ""} />
-        <label for="settings__music-toggle" name="off">Off</label>
-        <label for="settings__music-toggle" name="on">On</label>
+        <label for="settings__music-toggle" name="off" data-i18n="settings.off">Off</label>
+        <label for="settings__music-toggle" name="on" data-i18n="settings.on">On</label>
       </div>
     </li>`;
   }

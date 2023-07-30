@@ -40,11 +40,7 @@ class Categories {
         ? `<a class="categories__item_result" href="#${type}/${index}/last-result" title="Open last result" data-i18n="[title]results.tips.last">${numberOfCorrectAnswer}/10</a>`
         : ""
     }
-      <img
-        src="${preview}"
-        alt="${author} - ${name}"
-      />
-    
+      <img src="${preview}" alt="${author} - ${name}"/>
     </li>`;
   }
 
