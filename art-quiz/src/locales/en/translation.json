@@ -1,0 +1,52 @@
+{
+  "categories": {
+    "paintings": {
+      "title": "Paintings",
+      "tip": "Choose Paintings category",
+      "addition": "Guess the picture of the author"
+    },
+    "artists": {
+      "title": "Artists",
+      "tip": "Choose Artist category",
+      "addition": "Guess the author of the painting"
+    },
+    "round": "Round",
+    "start": "Start round"
+  },
+  "header": {
+    "title": "Art Quiz",
+    "tips": {
+      "home": "Back to home page",
+      "back": "Back to category page",
+      "settings": "Settings"
+    }
+  },
+  "footer": {
+    "github": "Open Github account in a new tab"
+  },
+  "results": {
+    "tips": {
+      "last": "Open last result",
+      "full": "Open full image in a new tab"
+    }
+  },
+  "quiz": {
+    "answers": {
+      "wrong": "Wrong answer!",
+      "correct": "Correct answer!"
+    },
+    "tips": {
+      "next": "Next quiz"
+    },
+    "final": {
+      "complete": "Round completed!",
+      "line": {
+        "worst": "Please try again. You can do better!",
+        "bad": "Nice try. Can we repeat it?",
+        "neutral": "Almost done! One more time?",
+        "great": "Well done! You are now an art professor!"
+      },
+      "repeate": "One more attempt"
+    }
+  }
+}

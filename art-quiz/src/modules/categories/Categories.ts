@@ -32,12 +32,12 @@ class Categories {
     const startIndex = getStartedIndexForImageSlice(type, index);
     const numberOfCorrectAnswer = Categories.checkNumberOfCorrectAnswer(startIndex, type);
     return `<li data-index="${`${startIndex}`}" data-type="${type}" class="categories__item">
-    <a class="categories__item_to-start" href="#${type}/${index}" title="Start Round ${index + 1}"><h3>Round ${
-      index + 1
-    }</h3></a>
+    <a class="categories__item_to-start" href="#${type}/${index}" title="Start Round" data-i18n="[title]categories.start">
+    <h3><span data-i18n="categories.round">Round</span> ${index + 1}</h3>
+    </a>
     ${
       typeof numberOfCorrectAnswer === "number"
-        ? `<a class="categories__item_result" href="#${type}/${index}/last-result" title="See result">${numberOfCorrectAnswer}/10</a>`
+        ? `<a class="categories__item_result" href="#${type}/${index}/last-result" title="Open last result" data-i18n="[title]results.tips.last">${numberOfCorrectAnswer}/10</a>`
         : ""
     }
       <img

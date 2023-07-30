@@ -3,7 +3,7 @@ import ResultBar from "../resultBar/ResultBar";
 import Timer from "../Timer";
 import SoundEffects from "../SoundEffects";
 import { ImageType } from "../../interfaces";
-import { sliceImagePack, random, shuffle } from "../../utils";
+import { sliceImagePack, random, shuffle, updateMainContent } from "../../utils";
 import images from "../../images";
 import "./quiz.scss";
 
@@ -30,10 +30,7 @@ class Quiz {
     const { timerValue, timerEnabled } = Timer.setTimer();
     Quiz.intervalId = timerEnabled
       ? setTimeout(() => {
-          const main = document.querySelector("main");
-          if (main) {
-            main.innerHTML = Quiz.setFinalResultScreen();
-          }
+          updateMainContent(Quiz.setFinalResultScreen());
         }, timerValue * 1000)
       : undefined;
 
@@ -61,24 +58,23 @@ class Quiz {
 
   static addListener() {
     document.addEventListener("click", (event) => {
-      const main = document.querySelector("main");
       const { target } = event;
-      if (target && target instanceof HTMLElement && main) {
+      if (target && target instanceof HTMLElement) {
         if (target.closest(".result-middle__nav-next")) {
           Quiz.currentIndexOfQuiz += 1;
           if (Quiz.currentIndexOfQuiz < Quiz.numberOfImagesInQuiz) {
             Quiz.activeImage = Quiz.imagePack[Quiz.currentIndexOfQuiz];
-            main.innerHTML = Quiz.createQuizItem(Quiz.type, Quiz.activeImage, images);
+            updateMainContent(Quiz.createQuizItem(Quiz.type, Quiz.activeImage, images));
           } else {
-            main.innerHTML = Quiz.setFinalResultScreen();
+            updateMainContent(Quiz.setFinalResultScreen());
           }
         } else if (target.closest(".answers__item")) {
           const isItCorrect = Quiz.checkIsItCorrect(Quiz.type, target, Quiz.activeImage);
           ResultBar.updateResult(isItCorrect, Quiz.index);
           SoundEffects.setSoundEffectSource(isItCorrect);
-          main.innerHTML = Quiz.createQuizMiddleResult(Quiz.activeImage, isItCorrect);
+          updateMainContent(Quiz.createQuizMiddleResult(Quiz.activeImage, isItCorrect));
         } else if (target.closest(".result-final__repeate")) {
-          main.innerHTML = Quiz.setQuiz(Quiz.type, Quiz.index);
+          updateMainContent(Quiz.setQuiz(Quiz.type, Quiz.index));
         }
       }
     });
@@ -128,7 +124,7 @@ class Quiz {
     const { preview, name } = image;
     return `<div class="quiz quiz-artists">
   <img
-    src="${preview}" alt="${name}"
+    src="${preview}" alt="${name}" title="${`${name}`}"
   />
   <ul class="quiz__answers">
   ${imageList
@@ -149,7 +145,7 @@ class Quiz {
   ${imageList
     .map((elem) => {
       return `<li class='answers__item'>
-      <img src="${elem.preview}" alt="${`${elem.name}`}" class='answers__item_content'/>
+      <img src="${elem.preview}" alt="${`${elem.name}`}" class='answers__item_content' title="${`${elem.name}`}"/>
     </li>`;
     })
     .join(" ")}
@@ -166,17 +162,18 @@ class Quiz {
     <h2>"${name}"</h2>
     <h3>${author}</h3>
     <span>${year}</span>
-    <a href="${full}" target="_blank" title="Go to see full image">
+    <a href="${full}" target="_blank" title="Open full image in a new tab" data-i18n="[title]results.tips.full">
     <i class='bx bx-link-external'></i>
     </a>
   </div>
   <div class="result-middle__nav">
-    <span class="result-middle__nav-result"> ${
+    <span class="result-middle__nav-result"> 
+    ${
       isItCorrect
-        ? '<i class="bx bx-check-circle indicator-correct"></i> Correct answer!'
-        : '<i class="bx bx-x-circle indicator-wrong"></i> Wrong answer!'
+        ? '<i class="bx bx-check-circle indicator-correct"></i><span data-i18n="quiz.answers.correct">Correct answer!</span>'
+        : '<i class="bx bx-x-circle indicator-wrong"></i><span data-i18n="quiz.answers.wrong">Wrong answer!</span>'
     } </span>
-    <button class="result-middle__nav-next" title="Next quiz">
+    <button class="result-middle__nav-next" title="Next quiz" data-i18n="[title]quiz.tips.next">
       <i class="bx bx-right-arrow-circle"></i>
     </button>
   </div>
@@ -185,30 +182,30 @@ class Quiz {
 
   static createEncouragingLine(resultNumber: number, maxNumber: number) {
     if (resultNumber === 0) {
-      return "Please try again. You can do better!";
+      return { type: "worst", line: "Please try again. You can do better!" };
     }
     const percentage = (resultNumber / maxNumber) * 100;
 
     if (percentage <= 30) {
-      return "Please try again. You can do better!";
+      return { type: "worst", line: "Please try again. You can do better!" };
     }
     if (percentage > 30 && percentage <= 70) {
-      return "Nice try. Can we repeat it?";
+      return { type: "bad", line: "Nice try. Can we repeat it?" };
     }
     if (percentage > 70 && percentage < 100) {
-      return "Almost done! One more time?";
+      return { type: "neutral", line: "Almost done! One more time?" };
     }
-    return "Well done! You are now an art professor!";
+    return { type: "great", line: "Well done! You are now an art professor!" };
   }
 
   static createFinalResult(resultNumber: number, maxNumber: number) {
     const encouragingLine = Quiz.createEncouragingLine(resultNumber, maxNumber);
     return `
 <div class="quiz__result-final">
-  <h3>Round completed!</h3>
-  <p>${encouragingLine}</p>
-  <p>${resultNumber} correct answers out of ${maxNumber}</p>
-<button class="result-final__repeate">
+  <h3 data-i18n="quiz.final.complete">Round completed!</h3>
+  <p data-i18n="quiz.final.line.${encouragingLine.type}">${encouragingLine.line}</p>
+  <p>${resultNumber}/${maxNumber}</p>
+<button class="result-final__repeate" title="One more attempt" data-i18n="[title]quiz.final.repeate">
     <i class='bx bx-sync'></i>
 </button>
 </div>

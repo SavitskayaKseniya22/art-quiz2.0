@@ -1,3 +1,4 @@
+import { translateContent } from "./i18n";
 import { ImageType } from "./interfaces";
 
 export function sliceImagePack(rangeStart: number, count: number, images: ImageType[]) {
@@ -34,4 +35,12 @@ export function checkTypeOfQuiz() {
 
 export function getStartedIndexForImageSlice(type: "paintings" | "artists", basicIndex: number) {
   return type === "paintings" ? (basicIndex + 12) * 10 : basicIndex * 10;
+}
+
+export function updateMainContent(content: string) {
+  const main = document.querySelector("main");
+  if (main) {
+    main.innerHTML = content;
+    translateContent();
+  }
 }

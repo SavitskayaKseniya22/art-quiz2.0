@@ -13,6 +13,9 @@ class SoundEffects {
   });
 
   static setSoundEffectSource(isItCorrect?: boolean) {
+    if (!SoundEffects.isEnabled) {
+      return;
+    }
     const src = SoundEffects.getSoundEffectSource(isItCorrect);
     SoundEffects.audioElement.setAttribute("src", src);
     SoundEffects.audioElement.play();

@@ -10,15 +10,22 @@ import SoundEffects from "./modules/SoundEffects";
 import Music from "./modules/Music";
 import { locationHandler } from "./routes";
 import { QuizResultType } from "./interfaces";
-import { getStartedIndexForImageSlice, sliceImagePack } from "./utils";
+import { getStartedIndexForImageSlice, sliceImagePack, updateMainContent } from "./utils";
 import images from "./images";
 import "boxicons";
 import "normalize.css";
 import "./style.scss";
-import "./i18n";
 import AppStorage from "./modules/Storage";
 
 class App {
+  static isItResultPage(location: string) {
+    return /^paintings\/[0-9]+\/last-result$/.test(location) || /^artists\/[0-9]+\/last-result$/.test(location);
+  }
+
+  static isItQuizPage(location: string) {
+    return /^paintings\/[0-9]+$/.test(location) || /^artists\/[0-9]+$/.test(location);
+  }
+
   static addListener() {
     Header.addListener();
     Settings.addListener();
@@ -27,7 +34,6 @@ class App {
     Music.addListener();
 
     window.addEventListener("hashchange", (event) => {
-      const main = document.querySelector("main");
       const location = window.location.hash.replace("#", "");
       locationHandler(location);
 
@@ -35,41 +41,36 @@ class App {
         Quiz.resetQuiz();
       }
 
-      if (main) {
-        Header.toggleNavDisability(location);
-        if (location === "paintings" || location === "artists") {
-          Quiz.type = location;
-          main.innerHTML = Categories.setCategory(location);
-        } else if (location === "") {
-          main.innerHTML = App.createQuizTypes();
-        } else if (/^paintings\/[0-9]+$/.test(location) || /^artists\/[0-9]+$/.test(location)) {
-          const basicIndex = Number(location.split("/").slice(-1).join(" "));
-          const { type } = Quiz;
-          const startedIndexForImageSlice = getStartedIndexForImageSlice(type, basicIndex);
-          if (startedIndexForImageSlice > 240) {
-            window.location.href = "/#";
-            return;
-          }
-          main.innerHTML = Quiz.setQuiz(type, startedIndexForImageSlice);
-        } else if (
-          /^paintings\/[0-9]+\/last-result$/.test(location) ||
-          /^artists\/[0-9]+\/last-result$/.test(location)
-        ) {
-          const { type } = Quiz;
-          const basicIndex = Number(location.split("/").splice(-2, 1).join(" "));
-          const startedIndexForImageSlice = getStartedIndexForImageSlice(type, basicIndex);
-          if (startedIndexForImageSlice > 240) {
-            window.location.href = "/#";
-            return;
-          }
-          const imagePack = sliceImagePack(startedIndexForImageSlice, 10, images);
-          const results: QuizResultType = AppStorage.read("quiz-result");
-          if (results && type && results[type] && results[type][startedIndexForImageSlice]) {
-            main.innerHTML = DetailedResults.setDetailedResults(imagePack, results[type][startedIndexForImageSlice]);
-          }
-        } else {
-          main.innerHTML = `<h2>404</h2>`;
+      Header.toggleNavDisability(location);
+      if (location === "paintings" || location === "artists") {
+        Quiz.type = location;
+        updateMainContent(Categories.setCategory(location));
+      } else if (location === "") {
+        updateMainContent(App.createQuizTypes());
+      } else if (App.isItQuizPage(location)) {
+        const basicIndex = Number(location.split("/").slice(-1).join(" "));
+        const { type } = Quiz;
+        const startedIndexForImageSlice = getStartedIndexForImageSlice(type, basicIndex);
+        if (startedIndexForImageSlice > 240) {
+          window.location.href = "/#";
+          return;
         }
+        updateMainContent(Quiz.setQuiz(type, startedIndexForImageSlice));
+      } else if (App.isItResultPage(location)) {
+        const { type } = Quiz;
+        const basicIndex = Number(location.split("/").splice(-2, 1).join(" "));
+        const startedIndexForImageSlice = getStartedIndexForImageSlice(type, basicIndex);
+        if (startedIndexForImageSlice > 240) {
+          window.location.href = "/#";
+          return;
+        }
+        const imagePack = sliceImagePack(startedIndexForImageSlice, 10, images);
+        const results: QuizResultType = AppStorage.read("quiz-result");
+        if (results && results[type] && results[type][startedIndexForImageSlice]) {
+          updateMainContent(DetailedResults.setDetailedResults(imagePack, results[type][startedIndexForImageSlice]));
+        }
+      } else {
+        updateMainContent(`<h2>404</h2>`);
       }
     });
 
@@ -83,15 +84,15 @@ class App {
   static createQuizTypes() {
     return `<ul class="quiz-type">
           <li>
-            <a href="#artists" title="Choose Artist category">
-            <h2 id="Artists">Artists</h2>
-            <p>Guess the author of the painting</p>
+            <a href="#artists" title="Choose Artist category" data-i18n="[title]categories.artists.tip" >
+            <h2 id="Artists" data-i18n="categories.artists.title">Artists</h2>
+            <p data-i18n="categories.artists.addition">Guess the author of the painting</p>
             </a>
           </li>
           <li>
-            <a href="#paintings" title="Choose Paintings category">
-            <h2 id="Paintings">Paintings</h2>
-            <p>Guess the picture of the author</p>
+            <a href="#paintings" title="Choose Paintings category" data-i18n="[title]categories.paintings.title">
+            <h2 id="Paintings" data-i18n="categories.paintings.title">Paintings</h2>
+            <p data-i18n="categories.paintings.addition">Guess the picture of the author</p>
             </a>
           </li>
         </ul>

@@ -15,7 +15,7 @@ class DetailedResults {
     <p>${author}</p>
     <span>${year}</span>
   </div>
-  <a class="results__item_link-to-full" target="_blank" href="${full}">
+  <a class="results__item_link-to-full" target="_blank" href="${full}" title="Open full image in a new tab" data-i18n="[title]results.tips.full">
     <i class='bx bx-link-external'></i>
   </a>
 </li>`;
