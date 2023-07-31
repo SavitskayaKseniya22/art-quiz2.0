@@ -2,13 +2,20 @@
 import ResultBar from "../resultBar/ResultBar";
 import Timer from "../Timer";
 import SoundEffects from "../SoundEffects";
+import {
+  sliceImagePack,
+  random,
+  shuffle,
+  updateMainContent,
+  fetchImage,
+  fetchImagesPack,
+  createEncouragingLine,
+} from "../../utils";
 import { ImageType } from "../../interfaces";
-import { sliceImagePack, random, shuffle, updateMainContent } from "../../utils";
-import images from "../../images";
 import "./quiz.scss";
 
 class Quiz {
-  static numberOfImagesInQuiz: number = 3;
+  static numberOfImagesInQuiz: number = 10;
 
   static imagePack: ImageType[] = [];
 
@@ -22,7 +29,10 @@ class Quiz {
 
   static type: "artists" | "paintings" = "artists";
 
-  static setQuiz(type: "artists" | "paintings", index: number) {
+  static images: ImageType[] = [];
+
+  static async setQuiz(type: "artists" | "paintings", index: number, images: ImageType[]) {
+    Quiz.images = images;
     Quiz.type = type;
     Quiz.index = index;
     Quiz.imagePack = sliceImagePack(index, Quiz.numberOfImagesInQuiz, images);
@@ -57,14 +67,15 @@ class Quiz {
   }
 
   static addListener() {
-    document.addEventListener("click", (event) => {
+    document.addEventListener("click", async (event) => {
       const { target } = event;
       if (target && target instanceof HTMLElement) {
         if (target.closest(".result-middle__nav-next")) {
           Quiz.currentIndexOfQuiz += 1;
           if (Quiz.currentIndexOfQuiz < Quiz.numberOfImagesInQuiz) {
             Quiz.activeImage = Quiz.imagePack[Quiz.currentIndexOfQuiz];
-            updateMainContent(Quiz.createQuizItem(Quiz.type, Quiz.activeImage, images));
+            const mainContent = await Quiz.createQuizItem(Quiz.type, Quiz.activeImage, Quiz.images);
+            updateMainContent(mainContent);
           } else {
             updateMainContent(Quiz.setFinalResultScreen());
           }
@@ -72,9 +83,11 @@ class Quiz {
           const isItCorrect = Quiz.checkIsItCorrect(Quiz.type, target, Quiz.activeImage);
           ResultBar.updateResult(isItCorrect, Quiz.index);
           SoundEffects.setSoundEffectSource(isItCorrect);
-          updateMainContent(Quiz.createQuizMiddleResult(Quiz.activeImage, isItCorrect));
+          const mainContent = await Quiz.createQuizMiddleResult(Quiz.activeImage, isItCorrect);
+          updateMainContent(mainContent);
         } else if (target.closest(".result-final__repeate")) {
-          updateMainContent(Quiz.setQuiz(Quiz.type, Quiz.index));
+          const mainContent = await Quiz.setQuiz(Quiz.type, Quiz.index, Quiz.images);
+          updateMainContent(mainContent);
         }
       }
     });
@@ -92,11 +105,12 @@ class Quiz {
     return false;
   }
 
-  static createQuizItem(type: "artists" | "paintings", image: ImageType, imageList: ImageType[]) {
+  static async createQuizItem(type: "artists" | "paintings", image: ImageType, imageList: ImageType[]) {
     const filteredImages = Quiz.createSetOfData(type, image, imageList);
     if (type === "artists") {
       return Quiz.createArtistsQuiz(image, filteredImages);
     }
+
     return Quiz.createPaintingQuiz(image, filteredImages);
   }
 
@@ -120,11 +134,12 @@ class Quiz {
     ]);
   }
 
-  static createArtistsQuiz(image: ImageType, imageList: ImageType[]) {
-    const { preview, name } = image;
+  static async createArtistsQuiz(image: ImageType, imageList: ImageType[]) {
+    const { name } = image;
+    const loadedPreview = await fetchImage(image.preview);
     return `<div class="quiz quiz-artists">
   <img
-    src="${preview}" alt="${name}" title="${`${name}`}"
+    src="${loadedPreview}" alt="${name}" title="${`${name}`}"
   />
   <ul class="quiz__answers">
   ${imageList
@@ -137,15 +152,18 @@ class Quiz {
 </div>`;
   }
 
-  static createPaintingQuiz(image: ImageType, imageList: ImageType[]) {
+  static async createPaintingQuiz(image: ImageType, imageList: ImageType[]) {
+    const loadedPreviews = await fetchImagesPack(imageList);
     const { author } = image;
     return `<div class="quiz quiz-paintings">
   <h2>${author}</h2>
   <ul class="quiz__answers">
   ${imageList
-    .map((elem) => {
+    .map((elem, index) => {
       return `<li class='answers__item'>
-      <img src="${elem.preview}" alt="${`${elem.name}`}" class='answers__item_content' title="${`${elem.name}`}"/>
+      <img src="${
+        loadedPreviews[index]
+      }" alt="${`${elem.name}`}" class='answers__item_content' title="${`${elem.name}`}"/>
     </li>`;
     })
     .join(" ")}
@@ -153,11 +171,12 @@ class Quiz {
 </div>`;
   }
 
-  static createQuizMiddleResult(image: ImageType, isItCorrect: boolean) {
-    const { author, preview, full, name, year } = image;
+  static async createQuizMiddleResult(image: ImageType, isItCorrect: boolean) {
+    const loadedPreview = await fetchImage(image.preview);
+    const { author, full, name, year } = image;
     return `
     <div class="quiz__result-middle">
-    <img src="${preview}" alt="${`${author} - ${name}`}" />
+    <img src="${loadedPreview}" alt="${`${author} - ${name}`}" />
   <div class="result-middle__content">
     <h2>"${name}"</h2>
     <h3>${author}</h3>
@@ -180,31 +199,13 @@ class Quiz {
 </div>`;
   }
 
-  static createEncouragingLine(resultNumber: number, maxNumber: number) {
-    if (resultNumber === 0) {
-      return { type: "worst", line: "Please try again. You can do better!" };
-    }
-    const percentage = (resultNumber / maxNumber) * 100;
-
-    if (percentage <= 30) {
-      return { type: "worst", line: "Please try again. You can do better!" };
-    }
-    if (percentage > 30 && percentage <= 70) {
-      return { type: "bad", line: "Nice try. Can we repeat it?" };
-    }
-    if (percentage > 70 && percentage < 100) {
-      return { type: "neutral", line: "Almost done! One more time?" };
-    }
-    return { type: "great", line: "Well done! You are now an art professor!" };
-  }
-
-  static createFinalResult(resultNumber: number, maxNumber: number) {
-    const encouragingLine = Quiz.createEncouragingLine(resultNumber, maxNumber);
+  static createFinalResult(result: number, max: number) {
+    const encouragingLine = createEncouragingLine(result, max);
     return `
 <div class="quiz__result-final">
   <h3 data-i18n="quiz.final.complete">Round completed!</h3>
   <p data-i18n="quiz.final.line.${encouragingLine.type}">${encouragingLine.line}</p>
-  <p>${resultNumber}/${maxNumber}</p>
+  <p>${result}/${max}</p>
 <button class="result-final__repeate" title="One more attempt" data-i18n="[title]quiz.final.repeate">
     <i class='bx bx-sync'></i>
 </button>

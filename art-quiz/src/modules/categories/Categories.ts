@@ -1,18 +1,21 @@
 import Quiz from "../quiz/Quiz";
 import AppStorage from "../Storage";
 import { ImageType, QuizResultType } from "../../interfaces";
-import { getStartedIndexForImageSlice, sliceImagePack } from "../../utils";
-import images from "../../images";
+import { fetchImagesPack, getStartedIndexForImageSlice, sliceImagePack } from "../../utils";
 import "./categories.scss";
 
 class Categories {
-  static images: { artists: ImageType[]; paintings: ImageType[] } = {
-    artists: sliceImagePack(0, 12, images),
-    paintings: sliceImagePack(12, 12, images),
-  };
+  static getImagesForCovers(type: "artists" | "paintings", images: ImageType[]) {
+    if (type === "artists") {
+      return sliceImagePack(0, 12, images);
+    }
+    return sliceImagePack(12, 12, images);
+  }
 
-  static setCategory(type: "artists" | "paintings") {
-    return Categories.createCategoryList(Categories.images[type]);
+  static async setCategory(type: "artists" | "paintings", images: ImageType[]) {
+    const covers = Categories.getImagesForCovers(type, images);
+    const urls = await fetchImagesPack(covers);
+    return Categories.createCategoryList(covers, urls);
   }
 
   static checkNumberOfCorrectAnswer(index: number, type: "artists" | "paintings") {
@@ -26,9 +29,9 @@ class Categories {
     return null;
   }
 
-  static createCategory(image: ImageType, index: number) {
+  static createCategory(image: ImageType, index: number, url: string) {
     const { type } = Quiz;
-    const { author, preview, name } = image;
+    const { author, name } = image;
     const startIndex = getStartedIndexForImageSlice(type, index);
     const numberOfCorrectAnswer = Categories.checkNumberOfCorrectAnswer(startIndex, type);
     return `<li data-index="${`${startIndex}`}" data-type="${type}" class="categories__item">
@@ -40,15 +43,15 @@ class Categories {
         ? `<a class="categories__item_result" href="#${type}/${index}/last-result" title="Open last result" data-i18n="[title]results.tips.last">${numberOfCorrectAnswer}/10</a>`
         : ""
     }
-      <img src="${preview}" alt="${author} - ${name}"/>
+      <img src="${url}" alt="${author} - ${name}"/>
     </li>`;
   }
 
-  static createCategoryList(imageList: ImageType[]) {
+  static createCategoryList(imageList: ImageType[], urls: string[]) {
     return `<ul class="categories">
     ${imageList
       .map((image, index) => {
-        return Categories.createCategory(image, index);
+        return Categories.createCategory(image, index, urls[index]);
       })
       .join(" ")}
     </ul>`;

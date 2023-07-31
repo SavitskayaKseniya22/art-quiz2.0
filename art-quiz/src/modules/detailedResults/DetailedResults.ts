@@ -1,15 +1,17 @@
 import { ImageType } from "../../interfaces";
+import { fetchImagesPack } from "../../utils";
 import "./detailedResults.scss";
 
 class DetailedResults {
-  static setDetailedResults(imageList: ImageType[], results: boolean[]) {
-    return DetailedResults.createCategoryList(imageList, results);
+  static async setDetailedResults(imageList: ImageType[], results: boolean[]) {
+    const urls = await fetchImagesPack(imageList);
+    return DetailedResults.createCategoryList(imageList, results, urls);
   }
 
-  static createCategory(image: ImageType, isItCorrect: boolean) {
-    const { author, preview, name, year, full } = image;
+  static createCategory(image: ImageType, isItCorrect: boolean, url: string) {
+    const { author, name, year, full } = image;
     return `<li class="results__item">
-  <img src="${preview}" ${!isItCorrect ? `class="results__item_img-wrong"` : ""} />
+  <img src="${url}" ${!isItCorrect ? `class="results__item_img-wrong"` : ""} />
   <div class="results__item_content">
     <h3>"${name}"</h3>
     <p>${author}</p>
@@ -21,11 +23,11 @@ class DetailedResults {
 </li>`;
   }
 
-  static createCategoryList(imageList: ImageType[], results: boolean[]) {
+  static createCategoryList(imageList: ImageType[], results: boolean[], urls: string[]) {
     return `<ul class="results">
     ${imageList
       .map((image, index) => {
-        return DetailedResults.createCategory(image, results[index]);
+        return DetailedResults.createCategory(image, results[index], urls[index]);
       })
       .join(" ")}
     </ul>`;

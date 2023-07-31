@@ -11,12 +11,6 @@ class Music {
   });
 
   static addListener() {
-    window.addEventListener("load", () => {
-      if (Music.isEnabled) {
-        Music.audioElement.play();
-      }
-    });
-
     window.addEventListener("beforeunload", () => {
       AppStorage.write("musicVolume", Music.audioElement.volume);
     });
@@ -61,6 +55,7 @@ class Music {
         <input type="range" class="music__range" min="0" max="1" step="0.1" value=${Music.audioElement.volume}
         } />
       </div>
+      ${Music.audioElement.outerHTML}
     </li>
     <li class="settings__music-toggle">
       <h4 data-i18n="settings.titles.music">Music</h4>

@@ -1,8 +1,22 @@
-import soundEffects from "../assets/json/playlist.json";
 import Audio from "./Audio";
 import AppStorage from "./Storage";
 
 class SoundEffects {
+  static playlist = [
+    {
+      title: "Sound effect for correct answer",
+      src: "../../../assets/sounds/effect-correct.mp3",
+    },
+    {
+      title: "Sound effect for wrong answer",
+      src: "../../../assets/sounds/effect-wrong.mp3",
+    },
+    {
+      title: "Sound effect for the end of quiz",
+      src: "../../../assets/sounds/effect-end.mp3",
+    },
+  ];
+
   static isEnabled: boolean = AppStorage.read("isSoundEffectsEnabled") || false;
 
   static audioElement: HTMLAudioElement = Audio.createAudioElement({
@@ -34,7 +48,7 @@ class SoundEffects {
         type = "Sound effect for the end of quiz";
         break;
     }
-    const effect = soundEffects.filter((elem) => {
+    const effect = SoundEffects.playlist.filter((elem) => {
       return elem.title === type;
     })[0];
     return effect.src;
@@ -82,6 +96,7 @@ class SoundEffects {
           SoundEffects.audioElement.volume
         } />
       </div>
+      ${SoundEffects.audioElement.outerHTML}
     </li>
 
     <li class="settings__effects-toggle">

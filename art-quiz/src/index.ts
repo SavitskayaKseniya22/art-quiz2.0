@@ -8,16 +8,21 @@ import DetailedResults from "./modules/detailedResults/DetailedResults";
 import Timer from "./modules/Timer";
 import SoundEffects from "./modules/SoundEffects";
 import Music from "./modules/Music";
+import AppStorage from "./modules/Storage";
 import { locationHandler } from "./routes";
-import { QuizResultType } from "./interfaces";
-import { getStartedIndexForImageSlice, sliceImagePack, updateMainContent } from "./utils";
-import images from "./images";
+import { getImagesJson, getStartedIndexForImageSlice, sliceImagePack, updateMainContent } from "./utils";
+import { ImageType, QuizResultType } from "./interfaces";
 import "boxicons";
 import "normalize.css";
 import "./style.scss";
-import AppStorage from "./modules/Storage";
 
 class App {
+  constructor(images: ImageType[]) {
+    App.images = images;
+  }
+
+  static images: ImageType[] = [];
+
   static isItResultPage(location: string) {
     return /^paintings\/[0-9]+\/last-result$/.test(location) || /^artists\/[0-9]+\/last-result$/.test(location);
   }
@@ -26,14 +31,14 @@ class App {
     return /^paintings\/[0-9]+$/.test(location) || /^artists\/[0-9]+$/.test(location);
   }
 
-  static addListener() {
+  addListener() {
     Header.addListener();
     Settings.addListener();
     Quiz.addListener();
     SoundEffects.addListener();
     Music.addListener();
 
-    window.addEventListener("hashchange", (event) => {
+    window.addEventListener("hashchange", async (event) => {
       const location = window.location.hash.replace("#", "");
       locationHandler(location);
 
@@ -44,7 +49,8 @@ class App {
       Header.toggleNavDisability(location);
       if (location === "paintings" || location === "artists") {
         Quiz.type = location;
-        updateMainContent(Categories.setCategory(location));
+        const categoriesContent = await Categories.setCategory(location, App.images);
+        updateMainContent(categoriesContent);
       } else if (location === "") {
         updateMainContent(App.createQuizTypes());
       } else if (App.isItQuizPage(location)) {
@@ -55,7 +61,8 @@ class App {
           window.location.href = "/#";
           return;
         }
-        updateMainContent(Quiz.setQuiz(type, startedIndexForImageSlice));
+        const quizContent = await Quiz.setQuiz(type, startedIndexForImageSlice, App.images);
+        updateMainContent(quizContent);
       } else if (App.isItResultPage(location)) {
         const { type } = Quiz;
         const basicIndex = Number(location.split("/").splice(-2, 1).join(" "));
@@ -64,21 +71,21 @@ class App {
           window.location.href = "/#";
           return;
         }
-        const imagePack = sliceImagePack(startedIndexForImageSlice, 10, images);
+        const imagePack = sliceImagePack(startedIndexForImageSlice, 10, App.images);
         const results: QuizResultType = AppStorage.read("quiz-result");
         if (results && results[type] && results[type][startedIndexForImageSlice]) {
-          updateMainContent(DetailedResults.setDetailedResults(imagePack, results[type][startedIndexForImageSlice]));
+          const detailedResultsContent = await DetailedResults.setDetailedResults(
+            imagePack,
+            results[type][startedIndexForImageSlice],
+          );
+          updateMainContent(detailedResultsContent);
         }
       } else {
         updateMainContent(`<h2>404</h2>`);
       }
     });
 
-    window.addEventListener("load", () => {
-      if (window.location.hash !== "") {
-        window.location.href = "/#";
-      }
-    });
+    return this;
   }
 
   static createQuizTypes() {
@@ -116,12 +123,17 @@ class App {
     const body = document.querySelector("body");
     if (body) {
       body.insertAdjacentHTML("afterbegin", App.content());
-      body.insertAdjacentElement("beforeend", SoundEffects.audioElement);
-      body.insertAdjacentElement("beforeend", Music.audioElement);
     }
-    App.addListener();
     return this;
   }
 }
+getImagesJson().then((images) => {
+  new App(images as ImageType[]).render().addListener();
+  if (window.location.hash !== "") {
+    window.location.href = "/#";
+  }
 
-new App().render();
+  if (Music.isEnabled) {
+    Music.audioElement.play();
+  }
+});
