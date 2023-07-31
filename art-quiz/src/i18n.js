@@ -11,7 +11,7 @@ i18next
       fallbackLng: "en",
       debug: true,
       backend: {
-        loadPath: "./locales/{{lng}}/{{ns}}.json",
+        loadPath: "./assets/json/locales/{{lng}}/{{ns}}.json",
       },
     },
     () => {
@@ -21,14 +21,10 @@ i18next
 
 export const localize = locI18next.init(i18next);
 
-export function translateContent() {
-  localize("body");
-}
-
 export function checkLanguage() {
   return i18next.language || window.localStorage.getItem("i18nextLng") || "en";
 }
 
 i18next.on("languageChanged", () => {
-  translateContent();
+  localize("body");
 });
