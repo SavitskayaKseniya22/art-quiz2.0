@@ -95,10 +95,9 @@ class Quiz {
 
   static checkIsItCorrect(type: "artists" | "paintings", target: HTMLElement, activeImage: ImageType) {
     const answer = target.closest(".answers__item")?.querySelector(".answers__item_content");
-
     if (
       (answer && type === "artists" && activeImage.author === answer.textContent) ||
-      (answer && type === "paintings" && activeImage.preview === answer.getAttribute("src"))
+      (answer && type === "paintings" && activeImage.name === answer.getAttribute("title"))
     ) {
       return true;
     }
